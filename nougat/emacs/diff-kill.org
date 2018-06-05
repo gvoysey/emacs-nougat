@@ -1,0 +1,29 @@
+* overwrite kill-buffer with kill-with-diff
+When killing a buffer that has unsaved changes, there's no way to see the diff.
+This provides one.  Based on [[https://emacs.stackexchange.com/questions/3245/kill-buffer-prompt-with-option-to-diff-the-changes][this]] SO answer.
+
+#+CAPTION: define a new  kill-buffer
+#+begin_src emacs-lisp
+(defun diff-kill-this-buffer ()
+  (interactive)
+  (catch 'quit
+    (save-window-excursion
+      (let (done)
+        (when (and buffer-file-name (buffer-modified-p))
+          (while (not done)
+            (let ((response (read-char-choice
+                             (format "Save file %s? (y, n, d, q) " (buffer-file-name))
+                             '(?y ?n ?d ?q))))
+              (setq done (cond
+                          ((eq response ?q) (throw 'quit nil))
+                          ((eq response ?y) (save-buffer) t)
+                          ((eq response ?n) (set-buffer-modified-p nil) t)
+                          ((eq response ?d) (diff-buffer-with-file) nil))))))
+        (kill-buffer (current-buffer))))))
+#+end_src
+
+
+#+CAPTION: rebind key
+#+begin_src emacs-lisp
+(global-set-key [remap kill-buffer] 'diff-kill-this-buffer)
+#+end_src
