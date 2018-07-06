@@ -1,0 +1,19 @@
+* Flycheck
+Flycheck is a modern on-the-fly syntax checking extension for GNU Emacs, intended as
+replacement for the older Flymake extension which is part of GNU Emacs.
+** Flycheck
+#+begin_src emacs-lisp
+(use-package flycheck
+;;  :ensure t
+  :straight (flycheck :type git :host github :repo "flycheck/flycheck")
+  :init (global-flycheck-mode)
+)
+#+end_src
+
+** helm-flycheck
+#+begin_src emacs-lisp
+(use-package helm-flycheck)
+(require 'helm-flycheck)
+(eval-after-load 'flycheck
+  '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))
+#+end_src
