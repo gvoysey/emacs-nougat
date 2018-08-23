@@ -21,6 +21,33 @@ Disable command-q
 (global-unset-key (kbd "s-q"))
 #+end_src
 
+** Linux
+Disable doc-view-mode defaults for pdf files (prefer evince).
+#+begin_src emacs-lisp
+(defun ensc/mailcap-mime-data-filter (filter)
+  ""
+  (mapcar (lambda(major)
+        (append (list (car major))
+            (remove nil
+                (mapcar (lambda(minor)
+                      (when (funcall filter (car major) (car minor) (cdr minor))
+                    minor))
+                    (cdr major)))))
+      mailcap-mime-data))
+
+(defun ensc/no-pdf-doc-view-filter (major minor spec)
+  (if (and (string= major "application")
+       (string= minor "pdf")
+       (member '(viewer . doc-view-mode) spec))
+      nil
+    t))
+
+(eval-after-load 'mailcap
+  '(progn
+     (setq mailcap-mime-data
+       (ensc/mailcap-mime-data-filter 'ensc/no-pdf-doc-view-filter))))
+#+end_src
+
 * boilerplate
 ** my/org-path-name
 #+begin_src emacs-lisp
@@ -103,6 +130,7 @@ same as in the user's shell.
 #+INCLUDE: "../nougat/packages/org-mode/extras/ox-gfm.org"
 #+INCLUDE: "../nougat/packages/org-mode/extras/ox-beamer.org"
 #+INCLUDE: "../nougat/packages/org-mode/extras/gnuplot.org"
+
 * projectile
 #+INCLUDE: "../nougat/packages/projectile/setup.org"
 
