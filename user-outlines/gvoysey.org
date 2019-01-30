@@ -100,6 +100,35 @@ Disable doc-view-mode defaults for pdf files (prefer evince).
 #+INCLUDE: "../nougat/emacs/undo-tree.org"
 #+INCLUDE: "../nougat/emacs/diff-kill.org"
 #+INCLUDE: "../nougat/emacs/flycheck.org"
+** dired-sidebar
+#+CAPTION: enable dired-sidebar
+#+begin_src emacs-lisp
+(straight-use-package 'dired-sidebar)
+  
+#+end_src
+:bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :init
+  (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
+  :config
+  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+  (setq dired-sidebar-subtree-line-prefix "__")
+  (setq dired-sidebar-theme 'vscode)
+  (setq dired-sidebar-use-term-integration t)
+  (setq dired-sidebar-use-custom-font t))
+
+** dired-sort-dirs
+#+CAPTION: sort directories first
+#+begin_src emacs-lisp
+(setq dired-listing-switches "-al --group-directories-first")
+#+end_src
+
 ** auto-revert mode
 Auto-revert acts a lot more like modern editors (sublime, etc).  I think. 
 #+CAPTION: auto-revert
