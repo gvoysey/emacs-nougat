@@ -100,13 +100,38 @@ Disable doc-view-mode defaults for pdf files (prefer evince).
 #+INCLUDE: "../nougat/emacs/undo-tree.org"
 #+INCLUDE: "../nougat/emacs/diff-kill.org"
 #+INCLUDE: "../nougat/emacs/flycheck.org"
-** dired-sidebar
-#+CAPTION: enable dired-sidebar
+** NeoTree
 #+begin_src emacs-lisp
-(straight-use-package 'dired-sidebar)
-(global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
-(setq dired-sidebar-use-term-integration t)
+    (use-package neotree
+;;      :straight (neotree :type git
+;;                                :host github
+;;                                :repo "")
+      :config (require 'neotree))
+(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+(setq projectile-switch-project-action 'neotree-projectile-action)
+(defun neotree-project-dir ()
+    "Open NeoTree using the git root."
+    (interactive)
+    (let ((project-dir (projectile-project-root))
+          (file-name (buffer-file-name)))
+      (neotree-toggle)
+      (if project-dir
+          (if (neo-global--window-exists-p)
+              (progn
+                (neotree-dir project-dir)
+                (neotree-find file-name)))
+        (message "Could not find git project root."))))
+(global-set-key [f8] 'neotree-project-dir)
+(setq neo-smart-open t)
 #+end_src
+
+*** all the icons
+#+CAPTION: 
+#+begin_src emacs-lisp
+(use-package all-the-icons
+:config (require 'all-the-icons))
+#+end_src
+
 
 
 ** dired-sort-dirs
