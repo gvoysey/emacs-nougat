@@ -1,0 +1,42 @@
+* Ivy
+https://github.com/abo-abo/swiper
+#+begin_quote
+flexible, simple tools for minibuffer completion in Emacs
+
+This repository contains:
+
+Ivy, a generic completion mechanism for Emacs.
+
+Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
+
+Swiper, an Ivy-enhanced alternative to isearch.
+#+end_quote
+
+#+CAPTION: Enable
+#+begin_src emacs-lisp
+(use-package ivy
+  :straight (ivy :files (:defaults (:exclude "swiper.el" "counsel.el" "ivy-hydra.el") "doc/ivy-help.org")
+                 :host github :repo "abo-abo/swiper"
+                 ))
+
+(use-package counsel
+  :straight (counsel :files ("counsel.el") :host github :repo "abo-abo/swiper"
+                     ))
+
+(use-package swiper
+  :straight (swiper :files ("swiper.el") :host github :repo "abo-abo/swiper"
+                    ))
+(
+use-package ivy-hydra
+  :straight (ivy-hydra :files ("ivy-hydra.el")
+                       :host github :repo "abo-abo/swiper"
+                       ))
+#+end_src
+
+#+CAPTION: configure
+#+begin_src emacs-lisp
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(setq ivy-count-format "(%d/%d) ")
+#+end_src
+
