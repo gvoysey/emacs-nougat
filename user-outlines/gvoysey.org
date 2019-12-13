@@ -217,7 +217,7 @@ Override default project directory path.
 #+INCLUDE: "../nougat/packages/magit/setup.org"
 ** github
 *** gist
-#+INCLUDE: "../nougat/packages/github/gist.org"
+##+INCLUDE: "../nougat/packages/github/gist.org"
 * multiple-cursors
 #+INCLUDE: "../nougat/packages/multiple-cursors/multiple-cursors.org"
 * pandoc mode
@@ -230,6 +230,16 @@ Override default project directory path.
 ** lisp
 #+INCLUDE: "../nougat/support/lisp/lispy-mode.org"
 ** python
+#+CAPTION: blacken lets you auto-blackify your python code
+#+begin_src emacs-lisp
+;;https://github.com/pythonic-emacs/blacken
+(use-package blacken
+:straight (blacken :type git :host github :repo "pythonic-emacs/blacken")
+:init (blacken-mode))
+(add-hook 'python-mode-hook 'blacken-mode)
+(setq blacken-only-if-project-is-blackened t)
+#+end_src
+
 #+INCLUDE: "../nougat/support/python/jedi.org"
 #+INCLUDE: "../nougat/support/python/elpy.org"
 ** markdown
