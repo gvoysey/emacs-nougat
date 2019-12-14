@@ -82,8 +82,11 @@ Disable doc-view-mode defaults for pdf files (prefer evince).
 ** Solarized-theme
 
 #+begin_src emacs-lisp
-(use-package solarized-theme
-:config (load-theme 'solarized-dark t))
+;; only load the theme when we're in a GUI.
+(use-package solarized-theme)
+(when (display-graphic-p)
+(load-theme 'solarized-dark t)
+)
 #+end_src
 
 * emacs
