@@ -80,13 +80,19 @@ Disable doc-view-mode defaults for pdf files (prefer evince).
 #+end_src
 
 ** Solarized-theme
+#+CAPTION: use solarized
+#+begin_src emacs-lisp
+(use-package solarized-theme)
+(load-theme 'solarized-dark t)
+#+end_src
 
 #+begin_src emacs-lisp
 ;; only load the theme when we're in a GUI.
-(use-package solarized-theme)
-(when (display-graphic-p)
-(load-theme 'solarized-dark t)
-)
+;;(use-package solarized-theme)
+;;(when (display-graphic-p)
+;;(load-theme 'solarized-dark t)
+;;(enable-theme 'solarized-dark)
+;;)
 #+end_src
 
 * emacs
@@ -106,6 +112,31 @@ Disable doc-view-mode defaults for pdf files (prefer evince).
 #+INCLUDE: "../nougat/emacs/dired.org"
 #+INCLUDE: "../nougat/emacs/popwin.org"
 #+INCLUDE: "../nougat/emacs/ws-butler.org"
+** COMMENT sr-speedbar
+#+include: "../nougat/emacs/srspeedbar.org"
+
+#+begin_src emacs-lisp
+(setq speedbar-initial-expansion-list-name "quick buffers")
+(global-set-key (kbd "M-1") 'sr-speedbar-toggle)
+#+end_src
+
+** COMMENT buffer-move
+#+CAPTION: Move buffers around more easily 
+#+begin_src emacs-lisp
+  (use-package buffer-move
+  :straight(buffer-move
+  :type git
+  :host github
+  :repo "lukhas/buffer-move"))
+
+  ;; ((global-set-key (kbd "<C-S-up>")     'buf-move-up)
+  ;; (global-set-key (kbd "<C-S-down>")   'buf-move-down)
+  ;; (global-set-key (kbd "<C-S-left>")   'buf-move-left)
+  ;; (global-set-key (kbd "<C-S-right>")  'buf-move-right)
+  ;; ;;(setq buffer-move-stay-after-swap t)
+  ;; ;;(setq buffer-move-behavior 'move)
+  ;; )
+#+end_src
 
 ** split window sensibly
 #+CAPTION: from [[https://stackoverflow.com/questions/23659909/reverse-evaluation-order-of-split-height-threshold-and-split-width-threshold-in][SO]]
