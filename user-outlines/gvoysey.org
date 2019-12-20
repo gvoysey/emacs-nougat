@@ -12,6 +12,7 @@ Disable command-q
 (global-unset-key (kbd "s-q"))
 #+end_src
 
+
 ** Linux
 Disable doc-view-mode defaults for pdf files (prefer evince).
 #+begin_src emacs-lisp
@@ -72,7 +73,7 @@ Disable doc-view-mode defaults for pdf files (prefer evince).
 #+INCLUDE: "../nougat/package-management/straight.org::bootstrap"
 #+INCLUDE: "../nougat/package-management/straight.org::use-package integration"
 
-* Themes
+* themes
 ** COMMENT Badger-theme
 #+begin_src emacs-lisp
   (use-package badger-theme)
@@ -112,13 +113,16 @@ Disable doc-view-mode defaults for pdf files (prefer evince).
 #+INCLUDE: "../nougat/emacs/dired.org"
 #+INCLUDE: "../nougat/emacs/popwin.org"
 #+INCLUDE: "../nougat/emacs/ws-butler.org"
-** Avy
-#+CAPTION: avy keybindings
+#+INCLUDE: "../nougat/emacs/avy.org"
+** exec-path from shell
+[[https://github.com/purcell/exec-path-from-shell][This]] is a GNU Emacs library to ensure environment variables inside Emacs look the
+same as in the user's shell.
+
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-:") 'avy-goto-char)
-(global-set-key (kbd "C-'") 'avy-goto-char-2)
-(global-set-key (kbd "M-g f") 'avy-goto-line)
-(global-set-key (kbd "M-g w") 'avy-goto-word-1)
+  (use-package exec-path-from-shell
+    :config
+    (when (memq window-system '(mac ns ox))
+      (exec-path-from-shell-initialize)))
 #+end_src
 
 ** COMMENT sr-speedbar
@@ -180,28 +184,20 @@ Auto-revert acts a lot more like modern editors (sublime, etc).  I think.
 (global-auto-revert-mode t)
 #+end_src
 
-** exec-path from shell
-[[https://github.com/purcell/exec-path-from-shell][This]] is a GNU Emacs library to ensure environment variables inside Emacs look the
-same as in the user's shell.
-
-#+begin_src emacs-lisp
-  (use-package exec-path-from-shell
-    :config
-    (when (memq window-system '(mac ns ox))
-      (exec-path-from-shell-initialize)))
-#+end_src
-
 ** display line numbers
 #+begin_src emacs-lisp
 (global-display-line-numbers-mode)
 #+end_src
 
-** open files in native applications
+* projectile
+#+INCLUDE: "../nougat/packages/projectile/setup.org"
 
+Override default project directory path.
 #+begin_src emacs-lisp
-
+  (setq projectile-project-directory (expand-file-name "~/Projects/"))
 #+end_src
 
+#+INCLUDE: "../nougat/packages/projectile/discover-projects.org"
 * org-mode
 #+INCLUDE: "../nougat/packages/org-mode/setup.org::setup"
 #+INCLUDE: "../nougat/packages/org-mode/setup.org::look"
@@ -226,17 +222,6 @@ same as in the user's shell.
 ##+INCLUDE: "../nougat/packages/org-mode/extras/org-projectile.org"
 ##+INCLUDE: "../nougat/packages/org-mode/extras/ox-hugo.org"
 ##+INCLUDE: "../nougat/packages/org-mode/extras/gnuplot.org"
-
-
-* projectile
-#+INCLUDE: "../nougat/packages/projectile/setup.org"
-
-Override default project directory path.
-#+begin_src emacs-lisp
-  (setq projectile-project-directory (expand-file-name "~/Projects/"))
-#+end_src
-
-#+INCLUDE: "../nougat/packages/projectile/discover-projects.org"
 * helm
 #+INCLUDE: "../nougat/packages/helm/setup.org"
 #+INCLUDE: "../nougat/packages/helm/extras/ace-jump-helm-line.org"
