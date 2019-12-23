@@ -1,4 +1,3 @@
-#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 #+language: en
 #+startup: overview indent align
 #+babel: :cache no
@@ -189,6 +188,42 @@ Auto-revert acts a lot more like modern editors (sublime, etc).  I think.
 (global-display-line-numbers-mode)
 #+end_src
 
+** dashboard
+#+CAPTION: Dashboard support
+#+begin_src emacs-lisp
+(use-package dashboard
+  :straight (dashboard :type git
+                       :host github
+                       :repo "emacs-dashboard/emacs-dashboard")
+;;  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
+
+(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+(setq dashboard-center-content t)
+(setq dashboard-items '((recents  . 5)
+                        (bookmarks . 5)
+                        (projects . 5)
+                        (agenda . 5)
+                        (registers . 5)))
+(setq dashboard-set-heading-icons t)
+(setq dashboard-set-file-icons t)
+(setq dashboard-set-navigator t)
+(setq dashboard-set-footer nil)
+#+end_src
+
+** awesome-tabs
+#+CAPTION: 
+#+begin_src emacs-lisp
+(use-package awesome-tab
+  :straight (awesome-tab :type git
+                         :host github
+                         :repo "manateelazycat/awesome-tab")
+  :config
+  (awesome-tab-mode t)
+)
+#+end_src
+
 * projectile
 #+INCLUDE: "../nougat/packages/projectile/setup.org"
 
@@ -291,3 +326,5 @@ Override default project directory path.
 #+INCLUDE: "../nougat/packages/hydra/extras/hydra-window.org"
 #+INCLUDE: "../nougat/packages/hydra/extras/hydra-yank-pop.org"
 #+INCLUDE: "../nougat/packages/hydra/extras/hydra-zoom.org"
+* misc
+
