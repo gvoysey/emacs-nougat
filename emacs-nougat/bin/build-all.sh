@@ -6,4 +6,4 @@ if [ -n "$(pgrep emacsclient)" ]
 fi
 
 emacs --batch -l ./build.el  --eval "(to-elisp \"./user-outlines/$1.org\" t)"
-emacs --batch -l ./build.el  --eval '(to-html ./user-outlines/$1.org t)'
+emacs --batch -l ./build.el  --eval "(to-html \"./user-outlines/$1.org\" t)"
