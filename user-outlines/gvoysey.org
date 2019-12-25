@@ -300,10 +300,9 @@ Override default project directory path.
 :init (blacken-mode))
 (add-hook 'python-mode-hook 'blacken-mode)
 (setq blacken-only-if-project-is-blackened t)
+(setq blacken-allow-py36 t)
 #+end_src
 
-#+RESULTS:
-: t
 
 #+CAPTION: poetry https://github.com/galaunay/poetry.el
 #+begin_src emacs-lisp
@@ -311,17 +310,18 @@ Override default project directory path.
  :straight (pyvenv :type git
                :host github
                :repo "jorgenschaefer/pyvenv")
-);; :ensure t)
+)
 (use-package transient
  :straight (transient :type git
                :host github
                :repo "magit/transient")
-);; :ensure t)
+)
 (use-package poetry
 :straight (poetry :type git
                   :host github
                   :repo "galaunay/poetry.el")
-);;:ensure t)
+:config (poetry-tracking-mode)
+)
 #+end_src
 
 #+INCLUDE: "../nougat/support/python/jedi.org"
