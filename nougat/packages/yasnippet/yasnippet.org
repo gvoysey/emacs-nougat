@@ -6,10 +6,8 @@ This assumes that snippets are stored or symlinked to =${HOME}/.emacs.d/snippets
 #+begin_src emacs-lisp
 (use-package yasnippet)
 (setq yas-snippet-dirs
-      '("~/.emacs.d/snippets"                 ;; personal snippets
-;;        "/path/to/some/collection/"           ;; foo-mode and bar-mode snippet collection
-;;        "/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
-        ))
+      (list (concat (file-name-as-directory user-emacs-directory) (file-name-as-directory "emacs-nougat") "snippets"))
+)
 
 (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
 (setq yas-triggers-in-field t) ;; allow nested snippets
