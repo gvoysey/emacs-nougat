@@ -5,15 +5,25 @@
 #+options: ^:nil num:nil tags:nil toc:nil* OS-specific
 #+title: Emacs config, org-mode style.
 #+description: A literate programming-style exposition of my Emacs configuration
-* OS-specific
-** macOS
-Disable command-q
+This is the current version of my emacs configuration.  It is rendered to a
+byte-compiled =init.el= by way of a kludgey bash script.
+
+Commented-out org-mode headings are neither shown here nor present in the tangled
+resulting elisp, but they are present in the repo that houses this document.
+* os-specific configurations
+Some things only need to be tweaked for certain OSes, and happen early -- in this
+case, before the package manager is initialized.
+** mac os
+*** Disable ⌘-q
+Accidentally closing your editor window when you don't mean to just sucks.
 #+begin_src emacs-lisp
 (global-unset-key (kbd "s-q"))
 #+end_src
 
-** Linux
-Disable doc-view-mode defaults for pdf files (prefer evince).
+** linux
+*** Disable doc-view-mode defaults for pdf files
+I prefer side-by-side pdf viewers over the in-emacs option for rendering PDFs.  This
+forces it.
 #+begin_src emacs-lisp
 (defun ensc/mailcap-mime-data-filter (filter)
   ""
@@ -40,6 +50,7 @@ Disable doc-view-mode defaults for pdf files (prefer evince).
 #+end_src
 
 * boilerplate
+Set up some variables pointing to where normal lab notebook things live.
 ** my/org-path-name
 #+begin_src emacs-lisp
   (defvar my/org-path-name (expand-file-name "~/Notebook/"))
@@ -67,25 +78,25 @@ Disable doc-view-mode defaults for pdf files (prefer evince).
     (concat my/template-directory file-name))
 #+end_src
 
-* straight.el
+* package management
 [[https://github.com/raxod502/straight.el][Straight.el]] is a next-generation, purely functional package manager for the Emacs hacker.
-#+INCLUDE: "../nougat/package-management/straight.org::bootstrap"
-#+INCLUDE: "../nougat/package-management/straight.org::use-package integration"
-
+#+INCLUDE: "../nougat/package-management/straight.org::bootstrap straight" :minlevel 2
+#+INCLUDE: "../nougat/package-management/straight.org::use-package integration" :minlevel 2
 * themes
-** COMMENT Badger-theme
+** COMMENT badger-theme
 #+begin_src emacs-lisp
   (use-package badger-theme)
    :config (load-theme 'badger t))
 #+end_src
 
-** Solarized-theme
-#+CAPTION: use solarized theme, it's purty.
+** solarized-theme
+Solarized is a nice theme.  Easy on the eyes.
 #+begin_src emacs-lisp
 (use-package solarized-theme)
 (load-theme 'solarized-dark t)
 #+end_src
 
+For reasons I don't fully understand, this doesn't work but ought to:
 #+begin_src emacs-lisp
 ;; only load the theme when we're in a GUI.
 ;;(use-package solarized-theme)
@@ -96,23 +107,24 @@ Disable doc-view-mode defaults for pdf files (prefer evince).
 #+end_src
 
 * emacs
-#+INCLUDE: "../nougat/emacs/fonts.org"
-#+INCLUDE: "../nougat/emacs/autosaves.org"
-#+INCLUDE: "../nougat/emacs/backups.org"
-#+INCLUDE: "../nougat/emacs/cursor.org"
-#+INCLUDE: "../nougat/emacs/disable.org"
-#+INCLUDE: "../nougat/emacs/editing.org"
-#+INCLUDE: "../nougat/emacs/key-bindings.org"
-#+INCLUDE: "../nougat/emacs/minor-modes.org"
-#+INCLUDE: "../nougat/emacs/modeline.org"
-#+INCLUDE: "../nougat/emacs/undo-tree.org"
-#+INCLUDE: "../nougat/emacs/diff-kill.org"
-#+INCLUDE: "../nougat/emacs/flycheck.org"
-#+INCLUDE: "../nougat/emacs/neotree.org"
-#+INCLUDE: "../nougat/emacs/dired.org"
-#+INCLUDE: "../nougat/emacs/popwin.org"
-#+INCLUDE: "../nougat/emacs/ws-butler.org"
-#+INCLUDE: "../nougat/emacs/avy.org"
+Configuration related core editor functions are here.
+#+INCLUDE: "../nougat/emacs/fonts.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/autosaves.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/backups.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/cursor.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/disable.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/editing.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/key-bindings.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/minor-modes.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/modeline.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/undo-tree.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/diff-kill.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/flycheck.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/neotree.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/dired.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/popwin.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/ws-butler.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/avy.org" :minlevel 2
 
 ** exec-path from shell
 [[https://github.com/purcell/exec-path-from-shell][This]] is a GNU Emacs library to ensure environment variables inside Emacs look the
@@ -152,7 +164,8 @@ same as in the user's shell.
 #+end_src
 
 ** split window sensibly
-#+CAPTION: from [[https://stackoverflow.com/questions/23659909/reverse-evaluation-order-of-split-height-threshold-and-split-width-threshold-in][SO]]
+From [[https://stackoverflow.com/questions/23659909/reverse-evaluation-order-of-split-height-threshold-and-split-width-threshold-in][SO]], this is a way to prefer vertical splits over horizontal ones depending on
+window size.
 #+begin_src emacs-lisp
 (defun my-split-window-sensibly (&optional window)
   (let ((window (or window (selected-window))))
@@ -178,19 +191,22 @@ same as in the user's shell.
 #+end_src
 
 ** auto-revert mode
-Auto-revert acts a lot more like modern editors (sublime, etc).  I think.
-#+CAPTION: auto-revert
+Auto-revert acts a lot more like modern editors (sublime, etc), which helps a great
+deal when editing files with potentially many editors at once.
+
 #+begin_src emacs-lisp
 (global-auto-revert-mode t)
 #+end_src
 
 ** display line numbers
+Line numbers are good.
 #+begin_src emacs-lisp
 (global-display-line-numbers-mode)
 #+end_src
 
 ** dashboard
-#+CAPTION: Dashboard support
+[[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]] is a pretty cute splash screen mode for emacs that's a nice way to jump
+between projects.
 #+begin_src emacs-lisp
 (use-package dashboard
   :straight (dashboard :type git
@@ -215,7 +231,7 @@ Auto-revert acts a lot more like modern editors (sublime, etc).  I think.
 #+end_src
 
 ** awesome-tabs
-#+CAPTION: 
+Emacs can have tabs! [[https://github.com/manateelazycat/awesome-tab][awesome tab]] provides them.
 #+begin_src emacs-lisp
 (use-package awesome-tab
   :straight (awesome-tab :type git
@@ -227,6 +243,9 @@ Auto-revert acts a lot more like modern editors (sublime, etc).  I think.
 #+end_src
 
 * projectile
+
+[[https://github.com/bbatsov/projectile][projectile]] is a project interaction library for emacs.
+
 #+INCLUDE: "../nougat/packages/projectile/setup.org"
 
 Override default project directory path.
@@ -236,6 +255,7 @@ Override default project directory path.
 
 #+INCLUDE: "../nougat/packages/projectile/discover-projects.org"
 * org-mode
+[[https://orgmode.org][org]] is life.
 #+INCLUDE: "../nougat/packages/org-mode/setup.org::setup"
 #+INCLUDE: "../nougat/packages/org-mode/setup.org::look"
 #+INCLUDE: "../nougat/packages/org-mode/setup.org::feel"
@@ -254,15 +274,13 @@ Override default project directory path.
 #+INCLUDE: "../nougat/packages/org-mode/extras/ox-beamer.org"
 #+INCLUDE: "../nougat/packages/org-mode/extras/ox-rst.org"
 #+INCLUDE: "../nougat/packages/org-mode/extras/org-avy.org"
-
-
 #+INCLUDE: "../nougat/packages/org-mode/extras/org-projectile.org"
 #+INCLUDE: "../nougat/packages/org-mode/extras/ox-hugo.org"
 #+INCLUDE: "../nougat/packages/org-mode/extras/gnuplot.org"
 * helm
 #+INCLUDE: "../nougat/packages/helm/setup.org"
 #+INCLUDE: "../nougat/packages/helm/extras/ace-jump-helm-line.org"
-#+INCLUDE: "../nougat/packages/helm/extras/helm-ag.org"
+#+INCLUDE: "../nougat/packages/helm/extras/helm-ag.org" :
 #+INCLUDE: "../nougat/packages/helm/extras/helm-bookmark.org"
 #+INCLUDE: "../nougat/packages/helm/extras/helm-company.org"
 #+INCLUDE: "../nougat/packages/helm/extras/helm-descbinds.org"
@@ -270,14 +288,26 @@ Override default project directory path.
 #+INCLUDE: "../nougat/packages/helm/extras/helm-org-rifle.org"
 #+INCLUDE: "../nougat/packages/helm/extras/helm-projectile.org"
 * ivy
+https://github.com/abo-abo/swiper
+#+begin_quote
+flexible, simple tools for minibuffer completion in Emacs
+
+This repository contains:
+
+Ivy, a generic completion mechanism for Emacs.
+
+Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
+
+Swiper, an Ivy-enhanced alternative to isearch.
+#+end_quote
 #+INCLUDE: "../nougat/packages/ivy/ivy.org"
 
 * yasnippet
+YASnippet extends org-mode's =<s=-like templating in an arbitrary way.  This is useful
+for quickly applying export settings, annotating code blocks, and the like.
 #+INCLUDE: "../nougat/packages/yasnippet/yasnippet.org"
 * git
-** gitignore
 #+INCLUDE: "../nougat/packages/gitignore/gitignore.org"
-** magit
 #+INCLUDE: "../nougat/packages/magit/setup.org"
 ** github
 *** gist
@@ -313,11 +343,7 @@ Override default project directory path.
                :host github
                :repo "jorgenschaefer/pyvenv")
 )
-(use-package transient
- :straight (transient :type git
-               :host github
-               :repo "magit/transient")
-)
+
 (use-package poetry
 :straight (poetry :type git
                   :host github
@@ -335,7 +361,7 @@ Override default project directory path.
 ** direnv
 #+INCLUDE: "../nougat/support/direnv/direnv.org"
 
-* hydra
+* COMMENT hydra
 #+INCLUDE: "../nougat/packages/hydra/setup.org"
 #+INCLUDE: "../nougat/packages/hydra/extras/hydra-hera.org"
 #+INCLUDE: "../nougat/packages/hydra/extras/hydra-bookmarks.org"

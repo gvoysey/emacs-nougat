@@ -1,11 +1,14 @@
 * minor-modes
+There are a variety of minor modes that are worth having.
 ** whitespace-mode
+It's good to know where your whitespace is!
+[[https://www.emacswiki.org/emacs/WhiteSpace][whitespace]] requires you to see it.
 #+BEGIN_SRC emacs-lisp
   (use-package whitespace
     :diminish global-whitespace-mode
     :init
-    (setq whitespace-style
-          '(face tabs newline trailing tab-mark space-before-tab space-after-tab))
+    (setq whitespace-style '(face tabs newline trailing tab-mark
+          space-before-tab space-after-tab))
     (global-whitespace-mode 1))
 #+END_SRC
 
@@ -29,6 +32,7 @@ Matching closed brackets are inserted for any typed open bracket.
 #+END_SRC
 
 ** rainbow-delimeters-mode
+Add some colors to them delimiters!
 #+BEGIN_SRC emacs-lisp
   (require 'color)
   (defun gen-col-list (length s v &optional hval)
@@ -79,6 +83,7 @@ Matching closed brackets are inserted for any typed open bracket.
 #+END_SRC
 
 ** show-paren-mode
+Hilight your other delimiter.
 #+begin_src emacs-lisp
   (show-paren-mode 1)
   (setq show-paren-delay 0)
@@ -91,6 +96,7 @@ Matching closed brackets are inserted for any typed open bracket.
 #+end_src
 
 ** which-key-mode
+Show keybindings, because we have a LOT of them.
 #+BEGIN_SRC emacs-lisp
   (use-package which-key              ;;; Display available keybindings in popup
     :diminish which-key-mode
@@ -102,13 +108,16 @@ Matching closed brackets are inserted for any typed open bracket.
 #+END_SRC
 
 ** company-mode
+[[https://company-mode.github.io/][company mode]] is an intellisenseish complete anywhere mode.
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :config (add-hook 'after-init-hook 'global-company-mode))
 #+END_SRC
 
 ** ispell-minor-mode
+Ispell is nice; aspell is nicer; one day hunspell might also be nice.
 #+begin_src emacs-lisp
-  (setq ispell-program-name (expand-file-name (shell-command-to-string "which aspell")))
+  (setq ispell-program-name (expand-file-name
+                            (shell-command-to-string "which aspell")))
 #+end_src
 
