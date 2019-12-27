@@ -7,3 +7,5 @@ fi
 
 emacs --batch -l ./build.el  --eval "(to-elisp \"./user-outlines/$1.org\" t)"
 emacs --batch -l ./build.el  --eval "(to-html \"./user-outlines/$1.org\" t)"
+rm -f "../docs/index.html"
+ln "./user-outlines/$1.html" "../docs/index.html"
