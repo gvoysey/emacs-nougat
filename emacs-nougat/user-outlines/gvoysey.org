@@ -83,27 +83,22 @@ Set up some variables pointing to where normal lab notebook things live.
 #+INCLUDE: "../nougat/package-management/straight.org::bootstrap straight" :minlevel 2
 #+INCLUDE: "../nougat/package-management/straight.org::use-package integration" :minlevel 2
 * themes
-** COMMENT badger-theme
-#+begin_src emacs-lisp
-  (use-package badger-theme)
-   :config (load-theme 'badger t))
-#+end_src
-
+Emacs has many themes that it can use.
 ** solarized-theme
-Solarized is a nice theme.  Easy on the eyes.
-#+begin_src emacs-lisp
-(use-package solarized-theme)
-(load-theme 'solarized-dark t)
-#+end_src
+Solarized is a nice theme.  Easy on the eyes.  Looks like garbage in some terminals,
+though, so we'll pick another.
 
-For reasons I don't fully understand, this doesn't work but ought to:
 #+begin_src emacs-lisp
-;; only load the theme when we're in a GUI.
-;;(use-package solarized-theme)
-;;(when (display-graphic-p)
-;;(load-theme 'solarized-dark t)
-;;(enable-theme 'solarized-dark)
-;;)
+(use-package solarized-theme
+    :config
+    (when (display-graphic-p)
+         (load-theme 'solarized-dark t)
+         (enable-theme 'solarized-dark))
+)
+(unless (display-graphic-p)
+    (load-theme 'whiteboard t)
+)
+
 #+end_src
 
 * emacs
@@ -238,7 +233,7 @@ Emacs can have tabs! [[https://github.com/manateelazycat/awesome-tab][awesome ta
                          :host github
                          :repo "manateelazycat/awesome-tab")
   :config
-  (awesome-tab-mode t)
+  (when (display-graphic-p) (awesome-tab-mode t))
 )
 #+end_src
 
