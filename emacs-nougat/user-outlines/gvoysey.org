@@ -247,6 +247,26 @@ Emacs can have tabs! [[https://github.com/manateelazycat/awesome-tab][awesome ta
  :config (global-diff-hl-mode))
 #+end_src
 
+** shift-tab
+Sometimes it's handy to go back exactly a tab width.
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "<S-tab>") 'un-indent-by-tab-width)
+(defun un-indent-by-tab-width ()
+  "remove 4 spaces from beginning of of line"
+  (interactive)
+  (save-excursion
+    (save-match-data
+      (beginning-of-line)
+      ;; get rid of tabs at beginning of line
+      (when (looking-at "^\\s-+")
+        (untabify (match-beginning 0) (match-end 0)))
+      (when (concat "^" (make-string tab-width ?\ ))
+        (replace-match "")))))
+
+#+end_src
+
+
 * projectile
 
 [[https://github.com/bbatsov/projectile][projectile]] is a project interaction library for emacs.
