@@ -6,10 +6,13 @@
 #+title: Emacs config, org-mode style.
 #+description: A literate programming-style exposition of my Emacs configuration
 This is the current version of my emacs configuration.  It is rendered to a
-byte-compiled =init.el= by way of a kludgey bash script.
+byte-compiled =init.el= by way of a slightly kludgey bash script.
 
 Commented-out org-mode headings are neither shown here nor present in the tangled
 resulting elisp, but they are present in [[https://github.com/gvoysey/emacs.d][the repo]] that houses this document.
+
+#+INCLUDE: "./base.org"
+
 * os-specific configurations
 Some things only need to be tweaked for certain OSes, and happen early -- in this
 case, before the package manager is initialized.
@@ -78,7 +81,7 @@ Set up some variables pointing to where normal lab notebook things live.
     (concat my/template-directory file-name))
 #+end_src
 
-* package management
+* COMMENT package management
 [[https://github.com/raxod502/straight.el][Straight.el]] is a next-generation, purely functional package manager for the Emacs hacker.
 #+INCLUDE: "../nougat/package-management/straight.org::bootstrap straight" :minlevel 2
 #+INCLUDE: "../nougat/package-management/straight.org::use-package integration" :minlevel 2
@@ -298,9 +301,9 @@ Override default project directory path.
 #+end_src
 
 #+INCLUDE: "../nougat/packages/projectile/discover-projects.org"
-* org-mode
+* org-mode customizations
 [[https://orgmode.org][org]] is life.
-#+INCLUDE: "../nougat/packages/org-mode/setup.org::setup"
+##+INCLUDE: "../nougat/packages/org-mode/setup.org::setup"
 #+INCLUDE: "../nougat/packages/org-mode/setup.org::look"
 #+INCLUDE: "../nougat/packages/org-mode/setup.org::feel"
 #+INCLUDE: "../nougat/packages/org-mode/extras/org-babel.org::add languages to babel"
