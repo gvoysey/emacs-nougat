@@ -1,0 +1,25 @@
+** dashboard
+[[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]] is a pretty cute splash screen mode for emacs that's a nice way to jump
+between projects.
+#+begin_src emacs-lisp
+  (use-package dashboard
+    :straight (dashboard :type git
+                         :host github
+                         :repo "emacs-dashboard/emacs-dashboard")
+    :config
+    (when (display-graphic-p) (dashboard-setup-startup-hook)))
+
+    (when (display-graphic-p)
+      (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+      (setq dashboard-center-content t)
+      (setq dashboard-items '((recents  . 5)
+                              (bookmarks . 5)
+                              (projects . 5)
+                              (agenda . 5)
+                              ;;                        (registers . 5)
+                              ))
+      (setq dashboard-set-heading-icons t)
+      (setq dashboard-set-file-icons t)
+      (setq dashboard-set-navigator t)
+      (setq dashboard-set-footer nil))
+#+end_src

@@ -119,182 +119,18 @@ Configuration related core editor functions are here.
 #+INCLUDE: "../nougat/emacs/popwin.org" :minlevel 2
 #+INCLUDE: "../nougat/emacs/ws-butler.org" :minlevel 2
 #+INCLUDE: "../nougat/emacs/avy.org" :minlevel 2
-
-** exec-path from shell
-[[https://github.com/purcell/exec-path-from-shell][This]] is a GNU Emacs library to ensure environment variables inside Emacs look the
-same as in the user's shell.
-
-#+begin_src emacs-lisp
-  (use-package exec-path-from-shell
-  :config
-   (exec-path-from-shell-initialize)
-)
-;;    :config
-;;    (when (memq window-system '(mac ns ox))
-;;      (exec-path-from-shell-initialize)))
-#+end_src
-
-** COMMENT sr-speedbar
-#+include: "../nougat/emacs/srspeedbar.org"
-
-#+begin_src emacs-lisp
-(setq speedbar-initial-expansion-list-name "quick buffers")
-(global-set-key (kbd "M-1") 'sr-speedbar-toggle)
-#+end_src
-
-** COMMENT buffer-move
-#+CAPTION: Move buffers around more easily 
-#+begin_src emacs-lisp
-  (use-package buffer-move
-  :straight(buffer-move
-  :type git
-  :host github
-  :repo "lukhas/buffer-move"))
-
-  ;; ((global-set-key (kbd "<C-S-up>")     'buf-move-up)
-  ;; (global-set-key (kbd "<C-S-down>")   'buf-move-down)
-  ;; (global-set-key (kbd "<C-S-left>")   'buf-move-left)
-  ;; (global-set-key (kbd "<C-S-right>")  'buf-move-right)
-  ;; ;;(setq buffer-move-stay-after-swap t)
-  ;; ;;(setq buffer-move-behavior 'move)
-  ;; )
-#+end_src
-
-** split window sensibly
-From [[https://stackoverflow.com/questions/23659909/reverse-evaluation-order-of-split-height-threshold-and-split-width-threshold-in][SO]], this is a way to prefer vertical splits over horizontal ones depending on
-window size.
-#+begin_src emacs-lisp
-(defun my-split-window-sensibly (&optional window)
-  (let ((window (or window (selected-window))))
-    (or (and (window-splittable-p window t)
-             ;; Split window horizontally.
-             (with-selected-window window
-               (split-window-right)))
-        (and (window-splittable-p window)
-             ;; Split window vertically.
-             (with-selected-window window
-               (split-window-below)))
-        (and (eq window (frame-root-window (window-frame window)))
-             (not (window-minibuffer-p window))
-             ;; If WINDOW is the only window on its frame and is not the
-             ;; minibuffer window, try to split it horizontally disregarding
-             ;; the value of `split-width-threshold'.
-             (let ((split-width-threshold 0))
-               (when (window-splittable-p window t)
-                 (with-selected-window window
-                   (split-window-right))))))))
-
-(setq split-window-preferred-function 'my-split-window-sensibly)
-#+end_src
-
-** auto-revert mode
-Auto-revert acts a lot more like modern editors (sublime, etc), which helps a great
-deal when editing files with potentially many editors at once.
-
-#+begin_src emacs-lisp
-(global-auto-revert-mode t)
-#+end_src
-
-** display line numbers
-Line numbers are good.
-#+begin_src emacs-lisp
-(global-display-line-numbers-mode)
-#+end_src
-
-** dashboard
-[[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]] is a pretty cute splash screen mode for emacs that's a nice way to jump
-between projects.
-#+begin_src emacs-lisp
-  (use-package dashboard
-    :straight (dashboard :type git
-                         :host github
-                         :repo "emacs-dashboard/emacs-dashboard")
-    :config
-    (when (display-graphic-p) (dashboard-setup-startup-hook)))
-
-    (when (display-graphic-p)
-      (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-      (setq dashboard-center-content t)
-      (setq dashboard-items '((recents  . 5)
-                              (bookmarks . 5)
-                              (projects . 5)
-                              (agenda . 5)
-                              ;;                        (registers . 5)
-                              ))
-      (setq dashboard-set-heading-icons t)
-      (setq dashboard-set-file-icons t)
-      (setq dashboard-set-navigator t)
-      (setq dashboard-set-footer nil))
-#+end_src
-
-** awesome-tabs
-Emacs can have tabs! [[https://github.com/manateelazycat/awesome-tab][awesome tab]] provides them.
-#+begin_src emacs-lisp
-(use-package awesome-tab
-  :straight (awesome-tab :type git
-                         :host github
-                         :repo "manateelazycat/awesome-tab")
-  :config
-  (when (display-graphic-p) (awesome-tab-mode t))
-)
-#+end_src
-
-** diff-hl
-
-#+begin_src emacs-lisp
-(use-package diff-hl
- :straight (diff-hl :type git
-               :host github
-               :repo "dgutov/diff-hl")
- :config (global-diff-hl-mode))
-#+end_src
-
-** shift-tab
-Sometimes it's handy to go back exactly a tab width.
-
-#+begin_src emacs-lisp
-(global-set-key (kbd "<S-tab>") 'un-indent-by-tab-width)
-(defun un-indent-by-tab-width ()
-  "remove 4 spaces from beginning of of line"
-  (interactive)
-  (save-excursion
-    (save-match-data
-      (beginning-of-line)
-      ;; get rid of tabs at beginning of line
-      (when (looking-at "^\\s-+")
-        (untabify (match-beginning 0) (match-end 0)))
-      (when (concat "^" (make-string tab-width ?\ ))
-        (replace-match "")))))
-
-#+end_src
-
-** webpaste
-#+begin_src emacs-lisp
-(use-package webpaste
-  :bind (("C-c C-p C-b" . webpaste-paste-buffer)
-         ("C-c C-p C-r" . webpaste-paste-region))
-  :config
-  (progn
-    (setq webpaste-provider-priority '("dpaste.org" "dpaste.com")))
-    (setq webpaste-paste-confirmation t)
-)
-#+end_src
-
-** hl-todo
-
-#+begin_src emacs-lisp
-(use-package hl-todo
- :straight (hl-todo :type git
-               :host github
-               :repo "tarsius/hl-todo")
- :config
-       (setq global-hl-todo-mode t)
-       (setq hl-todo-keyword-faces
-             '(("todo"   . "#FF0000")
-               ("fixme"  . "#FF0000"))
-       )
-)
-#+end_src
+#+INCLUDE: "../nougat/emacs/exec-path-from-shell.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/sr-speedbar.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/split-window-sensibly.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/auto-revert-mode.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/display-line-numbers.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/dashboard.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/awesome-tabs.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/diff-hl.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/shift-tab.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/webpaste.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/hl-todo.org" :minlevel 2
+#+INCLUDE: "../nougat/emacs/phi-search.org" :minlevel 2
 
 * projectile
 
@@ -306,7 +142,6 @@ Override default project directory path.
 #+begin_src emacs-lisp
   (setq projectile-project-search-path (list (expand-file-name "~/Projects/")
                                              (expand-file-name "~/Projects/nemo-api")
-                                             (expand-file-name "~/Notebook)")
                                              (expand-file-name "~/lab-notebook")
                                              (expand-file-name (concat user-emacs-directory "emacs-nougat"))))
   ;;(setq projectile-project-directory (expand-file-name "~/Projects/"))
@@ -367,26 +202,11 @@ for quickly applying export settings, annotating code blocks, and the like.
 * git
 #+INCLUDE: "../nougat/packages/gitignore/gitignore.org"
 #+INCLUDE: "../nougat/packages/magit/setup.org"
-** github
+** COMMENT github
 *** gist
 #+INCLUDE: "../nougat/packages/github/gist.org"
 * multiple-cursors
 #+INCLUDE: "../nougat/packages/multiple-cursors/multiple-cursors.org"
-* phi-search
-This is an incremental search which works with multiple cursors and replaces the
-normal bindings.
-
-#+begin_src emacs-lisp
-(use-package phi-search)
-(require 'phi-search)
-(require 'phi-replace)
-#+end_src
-
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-s") 'phi-search)
-(global-set-key (kbd "C-r") 'phi-search-backward)
-(global-set-key (kbd "M-%") 'phi-replace-query)
-#+end_src
 
 * pandoc mode
 #+INCLUDE: "../nougat/packages/pandoc-mode/pandoc-mode.org"
@@ -471,42 +291,7 @@ LSP is the language server protocol
 #+INCLUDE: "../nougat/packages/hydra/extras/hydra-hera.org"
 #+INCLUDE: "../nougat/packages/hydra/extras/hydra-org.org"
 #+INCLUDE: "../nougat/packages/hydra/extras/hydra-projectile.org"
-** window-hydra
-From [[https://github.com/dsedivec/dot-emacs-d/blob/master/lisp/window-hydra.el][here]]
-#+begin_src emacs-lisp
-(use-package windmove)
-(use-package ace-window)
-
-(require 'windmove)
-(require 'ace-window)
-
-;;;###autoload (autoload 'window-hydra/body "window-hydra" nil t)
-(defhydra window-hydra (:hint nil)
-  "
-  ^_i_^                  _1_ single window   _3_^ split window      _b_alance windows
-_j_   _l_  move buffer   _o_ther window      _\\_ transpose frame   s_w_ap window
-  ^_k_^                  _←_ winner-undo     _0_^ delete window     _→_ winner redo
-"
-  ("i" (aw-swap-window (windmove-find-other-window 'up)))
-  ("j" (aw-swap-window (windmove-find-other-window 'left)))
-  ("l" (aw-swap-window (windmove-find-other-window 'right)))
-  ("k" (aw-swap-window (windmove-find-other-window 'down)))
-  ("1" delete-other-windows)
-  ("3" split-window-right)
-  ("b" balance-windows)
-  ("o" ace-window)
-  ("\\" transpose-frame)
-  ("w" ace-swap-window)
-  ("<left>" winner-undo)
-  ("0" delete-window)
-  ("<right>" winner-redo)
-  ("q" nil))
-
-(provide 'window-hydra)
-
-(global-set-key (kbd "C-M-_") 'window-hydra/body)
-#+end_src
-
+#+INCLUDE: "../nougat/packages/hydra/extras/window-hydra.org" :minlevel 2
 ** COMMENT Other hydras
 
 #+INCLUDE: "../nougat/packages/hydra/extras/hydra-bookmarks.org"
