@@ -3,10 +3,13 @@
 
 This section isn't very configured yet.
 #+begin_src emacs-lisp
-(use-package multiple-cursors)
-(require 'multiple-cursors)
-(global-set-key (kbd "s-d") 'mc/mark-next-like-this)
-(global-set-key (kbd "s-e") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-(define-key mc/keymap (kbd "<return>") nil) ;; exit multiple-cursors with C-g only.
+      (use-package multiple-cursors
+        :bind ((C-M-S-d . 'mc/mark-next-like-this)
+               (C-M-S-e . 'me/mark-previous-like-this)
+               (C-M-S-a . 'mc/mark-all-like-this)))
+      (require 'multiple-cursors)
+      (global-set-key (kbd "s-d") 'mc/mark-next-like-this)
+      (global-set-key (kbd "s-e") 'mc/mark-previous-like-this)
+      (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+      (define-key mc/keymap (kbd "<return>") nil) ;; exit multiple-cursors with C-g only.
 #+end_src
