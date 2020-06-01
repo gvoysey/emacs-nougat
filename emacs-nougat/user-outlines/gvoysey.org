@@ -330,8 +330,15 @@ From [[https://two-wrongs.com/centered-cursor-mode-in-vanilla-emacs][centered-cu
 #+end_src
 
 
+** pinboard
+Manage pinboard pins with [[https://github.com/davep/pinboard.el][pinboard.el]].
 #+begin_src emacs-lisp
-(setq global-hl-line-mode t)
+  (use-package pinboard
+   :straight (pinboard :type git
+                 :host github
+                 :repo "davep/pinboard.el")
+   :config (add-to-list 'auth-sources "~/.authinfo" t)
+       )
 #+end_src
 
 * projectile
