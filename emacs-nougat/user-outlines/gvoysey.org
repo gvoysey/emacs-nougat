@@ -298,17 +298,18 @@ Sometimes it's handy to go back exactly a tab width.
 ** hl-todo
 nominally hilight lines that have todo in them
 #+begin_src emacs-lisp
-(use-package hl-todo
- :straight (hl-todo :type git
-               :host github
-               :repo "tarsius/hl-todo")
- :config
-       (global-hl-todo-mode)
-       (setq hl-todo-keyword-faces
-             '(("todo: "   . "#FF0000")
-               ("fixme: "  . "#FF0000"))
-       )
-)
+  (use-package hl-todo
+   :straight (hl-todo :type git
+                 :host github
+                 :repo "tarsius/hl-todo")
+   :init  (setq hl-todo-exclude-modes nil)
+   :config
+         (global-hl-todo-mode)
+         (setq hl-todo-keyword-faces
+               '(("todo"   . "#FF0000")
+                 ("fixme"  . "#FF0000"))
+         )
+  )
 #+end_src
 
 ** COMMENT centered-cursor
