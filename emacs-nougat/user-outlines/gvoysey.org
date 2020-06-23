@@ -12,7 +12,6 @@ Commented-out org-mode headings are neither shown here nor present in the tangle
 resulting elisp, but they are present in [[https://github.com/gvoysey/emacs.d][the repo]] that houses this document.
 
 #+INCLUDE: "./base.org"
-
 * os-specific configurations
 Some things only need to be tweaked for certain OSes, and happen early -- in this
 case, before the package manager is initialized.
@@ -55,8 +54,9 @@ forces it.
 * boilerplate
 Set up some variables pointing to where normal lab notebook things live.
 ** my/org-path-name
+Part of this configuration's purpose is to use emacs as a digital lab notebook.
 #+begin_src emacs-lisp
-  (defvar my/org-path-name (expand-file-name "~/Notebook/"))
+  (defvar my/org-path-name (expand-file-name "~/lab-notebook/"))
 #+end_src
 
 ** my/org-file-name
@@ -82,7 +82,7 @@ Set up some variables pointing to where normal lab notebook things live.
 #+end_src
 
 * themes
-Emacs has many themes that it can use.
+Emacs has many themes that it can use.  One set of them are configured here.
 ** solarized-theme
 Solarized is a nice theme.  Easy on the eyes.  The problem with themes is that I like
 to use emacsclient as ~exec emacsclient -c -a="" "$@" & > /dev/null~, but if you do
@@ -374,8 +374,16 @@ Add fancy modeline, because why not.
                         try-complete-lisp-symbol))
 #+end_src
 
-* projectile
+** elpher
+#+begin_src emacs-lisp
+  (use-package elpher
+   :straight (elpher :type git
+                 :repo "git://thelambdalab.xyz/elpher")
+   :config
+       )
+#+end_src
 
+* projectile
 [[https://github.com/bbatsov/projectile][projectile]] is a project interaction library for emacs.
 
 #+INCLUDE: "../nougat/packages/projectile/setup.org"
@@ -383,11 +391,8 @@ Add fancy modeline, because why not.
 Override default project directory path.
 #+begin_src emacs-lisp
   (setq projectile-project-search-path (list (expand-file-name "~/Projects/")
-                                             (expand-file-name "~/Projects/nemo-api")
-                                             (expand-file-name "~/Notebook)")
                                              (expand-file-name "~/lab-notebook")
                                              (expand-file-name (concat user-emacs-directory "emacs-nougat"))))
-  ;;(setq projectile-project-directory (expand-file-name "~/Projects/"))
 #+end_src
 
 #+INCLUDE: "../nougat/packages/projectile/discover-projects.org"
