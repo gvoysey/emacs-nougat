@@ -431,6 +431,34 @@ Override default project directory path.
      )
 #+end_src
 
+** strikethrough-done
+
+
+#+begin_src emacs-lisp
+(setq org-fontify-done-headline t)
+(custom-set-faces
+ '(org-done ((t (:foreground "DeepSkyBlue"
+                 :weight normal
+                 :strike-through t))))
+ '(org-headline-done
+            ((((class color) (min-colors 16) (background dark))
+               (:foreground "LightSalmon" :strike-through t)))))
+#+end_src
+
+# #+begin_src emacs-lisp
+# (defun my/modify-org-done-face ()
+#   (setq org-fontify-done-headline t)
+#   (set-face-attribute 'org-done nil :strike-through t)
+#   (set-face-attribute 'org-headline-done nil
+#                       :strike-through t
+# ;;                      :foreground "light gray"
+# ))
+
+# (eval-after-load "org"
+#   (add-hook 'org-add-hook 'my/modify-org-done-face))
+# #+end_src
+
+
 * helm
 #+INCLUDE: "../nougat/packages/helm/setup.org"
 #+INCLUDE: "../nougat/packages/helm/extras/ace-jump-helm-line.org"
