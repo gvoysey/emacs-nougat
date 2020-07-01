@@ -35,27 +35,30 @@ Getting org to play with straight.el is a little fussy.
 
 *** install package
 #+begin_src emacs-lisp
-  (use-package org
-    :mode ("\\.org\\'" . org-mode)
-    :bind (:map org-mode-map
-                ("M-n" . outline-next-visible-heading)
-                ("M-p" . outline-previous-visible-heading)
-                ("M-RET" . org-insert-heading)
-                ("C-c l" . org-store-link)
-                )
-    :config
-    ;; This forces straight to load the package immediately in an attempt to avoid the
-    ;; Org that ships with Emacs.
-    (require 'org)
-    (defalias #'org-git-version #'fix-org-git-version)
-    (defalias #'org-release #'fix-org-release)
+    (use-package org
+      :mode ("\\.org\\'" . org-mode)
+      :bind (:map org-mode-map
+                  ("M-n" . outline-next-visible-heading)
+                  ("M-p" . outline-previous-visible-heading)
+                  ("M-RET" . org-insert-heading)
+                  ("C-c l" . org-store-link)
+                  ("C-c a" . org-agenda)
+                  )
+      :config
+      ;; This forces straight to load the package immediately in an attempt to avoid the
+      ;; Org that ships with Emacs.
+      (require 'org)
+      (defalias #'org-git-version #'fix-org-git-version)
+      (defalias #'org-release #'fix-org-release)
 
-    ;; Enable org capture
-    (require 'org-capture)
+      ;; Enable org capture
+      (require 'org-capture)
 
-    ;; Enable template expansion
-    (require 'org-tempo)
-    )
+      ;; Enable template expansion
+      (require 'org-tempo)
+      ;; ignore flycheck files when looking in agenda
+      (setq org-agenda-file-regexp "\\`[^\\(.\\|flycheck_\\)].*\\.org\\'")
+      )
 #+end_src
 
 ** look

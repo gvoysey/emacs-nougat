@@ -434,8 +434,8 @@ Override default project directory path.
 #+end_src
 
 ** strikethrough-done
-
-
+Render org TODO states in the DONE category with struck-through text with a handy
+color scheme.
 #+begin_src emacs-lisp
 (setq org-fontify-done-headline t)
 (custom-set-faces
@@ -447,20 +447,15 @@ Override default project directory path.
                (:foreground "LightSalmon" :strike-through t)))))
 #+end_src
 
-# #+begin_src emacs-lisp
-# (defun my/modify-org-done-face ()
-#   (setq org-fontify-done-headline t)
-#   (set-face-attribute 'org-done nil :strike-through t)
-#   (set-face-attribute 'org-headline-done nil
-#                       :strike-through t
-# ;;                      :foreground "light gray"
-# ))
+** org-refile
+from [[https://blog.aaronbieber.com/2017/03/19/organizing-notes-with-refile.html][here]]
 
-# (eval-after-load "org"
-#   (add-hook 'org-add-hook 'my/modify-org-done-face))
-# #+end_src
+#+begin_src emacs-lisp
+(setq org-agenda-files (list my/org-path-name))
+(setq org-refile-targets '((org-agenda-files :maxlevel . 4)))
 
-
+(setq org-refile-allow-creating-parent-nodes 'confirm)
+#+end_src
 
 * helm
 #+INCLUDE: "../nougat/packages/helm/setup.org"
