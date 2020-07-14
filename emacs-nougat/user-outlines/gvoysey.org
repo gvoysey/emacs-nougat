@@ -384,6 +384,31 @@ Add fancy modeline, because why not.
        )
 #+end_src
 
+** perspective
+#+begin_src emacs-lisp
+(use-package perspective
+  :config
+  (persp-mode))
+#+end_src
+
+** eyebrowse
+[[https://depp.brause.cc/eyebrowse/][eyebrowse]]
+#+begin_src emacs-lisp
+(use-package eyebrowse
+ :init (setq eyebrowse-keymap-prefix (kbd"C-x e"))
+ :config
+ (eyebrowse-mode t)
+ (setq eyebrowse-wrap-around t)
+ (setq eyebrowse-switch-back-and-forth t)
+     )
+#+end_src
+
+** winner
+[[https://www.emacswiki.org/emacs/WinnerMode][winner mode]]
+#+begin_src emacs-lisp
+  (winner-mode t)
+#+end_src
+
 * projectile
 [[https://github.com/bbatsov/projectile][projectile]] is a project interaction library for emacs.
 
@@ -407,7 +432,7 @@ Override default project directory path.
 #+INCLUDE: "../nougat/packages/org-mode/extras/org-babel.org::disable code evaluation prompts"
 
 #+INCLUDE: "../nougat/packages/org-mode/extras/org-tidy.org"
-#+INCLUDE: "../nougat/packages/org-mode/extras/dynamic-tag-position.org"
+
 #+INCLUDE: "../nougat/packages/org-mode/extras/nested-narrowing.org"
 
 #+INCLUDE: "../nougat/packages/org-mode/extras/org-export.org"
@@ -456,6 +481,44 @@ from [[https://blog.aaronbieber.com/2017/03/19/organizing-notes-with-refile.html
 
 (setq org-refile-allow-creating-parent-nodes 'confirm)
 #+end_src
+*** COMMENT refile with links (broken)
+From [[https://gist.github.com/samspills/895c29a1c0f6bf2e66c23149bfcc0f38][this gist]], set things up so that org-refile leaves a backlink behind.  This is
+useful to me for my note style right now (as of <2020-07-08 Wed> because i usually
+want to have a per-date work log tree, but move todos off where they belong under a
+project.)
+
+#+begin_src emacs-lisp
+  ;; (setq org-id-link-to-use-id t)
+
+  ;; (defun org-refile--insert-link ( &rest _ )
+  ;;   (org-back-to-heading)
+  ;;   (let* ((refile-region-marker (point-marker))
+  ;;          (source-link (org-store-link nil)))
+  ;;     (org-insert-heading)
+  ;;     (insert source-link)
+  ;;     (goto-char refile-region-marker)))
+
+  ;; (advice-add 'org-refile
+  ;;             :before
+  ;;             #'org-refile--insert-link)
+#+end_src
+
+** org-ql
+
+#+begin_src emacs-lisp
+(use-package helm-org
+     )
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package org-ql
+ :straight (org-ql :type git
+               :host github
+               :repo "alphapapa/org-ql")
+     )
+#+end_src
+
+
 
 * helm
 #+INCLUDE: "../nougat/packages/helm/setup.org"
