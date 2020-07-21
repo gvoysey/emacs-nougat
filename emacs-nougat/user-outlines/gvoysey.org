@@ -528,12 +528,14 @@ project.)
 ** helm-bibtex
 [[https://github.com/tmalsburg/helm-bibtex#basic-configuration-recommended][helm-bibtex]] provides convenience methods for reference management.
 #+begin_src emacs-lisp
-(use-package helm-bibtex
- :straight (helm-bibtex :type git
-               :host github
-               :repo "tmalsburg/helm-bibtex")
- :config
-     )
+      (use-package helm-bibtex
+       :straight (helm-bibtex :type git
+                     :host github
+                     :repo "tmalsburg/helm-bibtex")
+       :config
+       (setq-default bibtex-completion-bibliography
+             (concat my/org-path-name "library.bib"))
+       (setq-default bibtex-completion-pdf-field "Files"))
 #+end_src
 ** org-ql
 
@@ -549,8 +551,6 @@ project.)
                :repo "alphapapa/org-ql")
      )
 #+end_src
-
-
 * ivy
 https://github.com/abo-abo/swiper
 #+begin_quote
