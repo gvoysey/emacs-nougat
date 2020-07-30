@@ -1,11 +1,14 @@
+:display-options:
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 #+language: en
-#+startup: overview indent align
+#+startup: overview indent align content
 #+babel: :cache no
 #+options: ^:nil num:nil tags:nil toc:nil* OS-specific
+
 #+title: Emacs config, org-mode style.
 #+author: grym
 #+description: A literate programming-style exposition of my Emacs configuration
+:end:
 This is the current version of my emacs configuration.  It is rendered to a
 byte-compiled =init.el= by way of a slightly kludgey bash script.
 
@@ -496,22 +499,22 @@ from [[https://blog.aaronbieber.com/2017/03/19/organizing-notes-with-refile.html
 #+begin_src emacs-lisp
 (setq org-agenda-files (list my/org-path-name))
 (setq org-refile-targets '((org-agenda-files :maxlevel . 5)))
-
 (setq org-refile-allow-creating-parent-nodes 'confirm)
 #+end_src
-*** COMMENT refile with links (broken)
+
+*** refile with links (broken)
 From [[https://gist.github.com/samspills/895c29a1c0f6bf2e66c23149bfcc0f38][this gist]], set things up so that org-refile leaves a backlink behind.  This is
 useful to me for my note style right now (as of <2020-07-08 Wed> because i usually
 want to have a per-date work log tree, but move todos off where they belong under a
 project.)
 
 #+begin_src emacs-lisp
-  ;; (setq org-id-link-to-use-id t)
+  ;; (setq org-id-link-to-org-use-id t)
 
   ;; (defun org-refile--insert-link ( &rest _ )
-  ;;   (org-back-to-heading)
-  ;;   (let* ((refile-region-marker (point-marker))
-  ;;          (source-link (org-store-link nil)))
+  ;;     (org-back-to-heading)
+  ;;     (let* ((refile-region-marker (point-marker))
+  ;;            (source-link (org-store-link nil)))
   ;;     (org-insert-heading)
   ;;     (insert source-link)
   ;;     (goto-char refile-region-marker)))
@@ -536,15 +539,15 @@ project.)
 ** org-ref
 
 #+begin_src emacs-lisp
-    (use-package org-ref
-     :straight (org-ref :type git
-                   :host github
-                   :repo "jkitchin/org-ref")
-     :config
-     (setq reftex-default-bibliography bibtex-completion-bibliography
-           org-ref-default-bibliography bibtex-completion-bibliography)
+  ;; (use-package org-ref
+  ;;  :straight (org-ref :type git
+  ;;                :host github
+  ;;                :repo "jkitchin/org-ref")
+  ;;  :config
+  ;;  (setq reftex-default-bibliography bibtex-completion-bibliography
+  ;;        org-ref-default-bibliography bibtex-completion-bibliography)
 
-         )
+  ;;      )
 #+end_src
 
 * helm
