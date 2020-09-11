@@ -31,14 +31,18 @@
 )
 #+end_src
 
-* COMMENT forge
+* forge
 Forge interfaces with github and gitlab
 #+begin_src emacs-lisp
-(use-package forge
- :straight (forge :type git
-               :host github
-               :repo "magit/forge")
-:after magit
-)
+        ;; (use-package forge
+        ;;  :straight (forge :type git
+        ;;                :host github
+        ;;                :repo "magit/forge")
+        ;; :after magit
+        ;; )
+      (use-package forge
+        :ensure t
+        :after magit
+        :config (setq forge-add-pullreq-refspec 'ask forge-pull-notifications t
+                         forge-topic-list-limit '(60 . 0)))
 #+end_src
-

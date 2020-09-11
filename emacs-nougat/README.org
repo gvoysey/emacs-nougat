@@ -6,11 +6,35 @@ Collaborative Emacs configuration is currently limited to the following options:
 - Hand pick snippets out of other people's config and never benefit from enhancements
   they make later.
 - Something even more egregious.
-- Bundled emacs+stuff macropackages (=scimax=, =spacemacs=, etc.)
+- Bundled emacs+stuff macropackages (=scimax=, =spacemacs=, =doom=,etc.)
 
 Emacs-nougat is a repository of "not-quite-packagable" snippets (nougats) and a system
 for composing them into a config file.
 
+*tested/used on emacs 26.x+*
+
+** Quickstart
+*** preliminaries
+Check to see if you have any previous emacs configurations in [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html][the normal locations]]:
+
+- =~/.emacs=
+- =~/.emacs.el=
+- =~/.emacs.d/init.el=
+
+If you do, move them out of the way by renaming them.
+*** clone and go!
+#+begin_src bash
+  # clone this repo
+  git clone https://github.com/gvoysey/emacs.d ~/.emacs.d
+  # go into the repo
+  cd ~/.emacs.d/emacs-nougat
+  # copy off the template config into one that has a name you like
+  cp ./user-outlines/template.org ./user-outlines/some-cool-name-you-like.org
+  # build this config.  Pass just the name of the file, no extension.  This might take a while the first time.
+  ./bin/build-all some-cool-name-you-like
+  # run emacs!
+  emacs
+#+end_src
 ** How does it work?
 
 It's crazy simple.
@@ -42,7 +66,7 @@ With an outline located at =user-outlines/my-config.org=, then from the root of 
 repository run the build script:
 
 #+begin_src shell
-./bin/build-elisp.sh my-outline
+./bin/build-all my-outline
 less ./user-outlines/my-config.el
 #+end_src
 
@@ -51,4 +75,4 @@ You can copy this to =~/.emacs.d/init.el= or create a symlink to it, or simply r
 
 
 ** Contributing
-Fork me, add your outline, bcontribute your nougat!
+Fork me, add your outline, contribute your nougat!
