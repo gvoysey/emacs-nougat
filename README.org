@@ -1,4 +1,78 @@
-# emacs.d
-Behold, i bring you tidings of great joy.
+* Emacs Nougat
 
-You may view a nicely rendered version of my current emacs configuration [[https://gvoysey.github.io/emacs.d/][here]].
+Collaborative Emacs configuration is currently limited to the following options:
+
+- Encapsulate features of configuration into packages and distribute them
+- Hand pick snippets out of other people's config and never benefit from enhancements
+  they make later.
+- Something even more egregious.
+- Bundled emacs+stuff macropackages (=scimax=, =spacemacs=, =doom=,etc.)
+
+Emacs-nougat is a repository of "not-quite-packagable" snippets (nougats) and a system
+for composing them into a config file.
+
+*tested/used on emacs 26.x+*
+
+** Quickstart
+*** preliminaries
+Check to see if you have any previous emacs configurations in [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html][the normal locations]]:
+
+- =~/.emacs=
+- =~/.emacs.el=
+- =~/.emacs.d/init.el=
+
+If you do, move them out of the way by renaming them.
+*** clone and go!
+#+begin_src bash
+  # clone this repo
+  git clone https://github.com/gvoysey/emacs.d ~/.emacs.d
+  # go into the repo
+  cd ~/.emacs.d/emacs-nougat
+  # copy off the template config into one that has a name you like
+  cp ./user-outlines/template.org ./user-outlines/some-cool-name-you-like.org
+  # build this config.  Pass just the name of the file, no extension.  This might take a while the first time.
+  ./bin/build-all some-cool-name-you-like
+  # run emacs!
+  emacs
+#+end_src
+** How does it work?
+
+It's crazy simple.
+
+*** *Create an outline*
+
+An outline, like those you'll find in =user-outlines/= is an =org-mode= document which
+can be structured however you like. Put elisp inside of =#+begin_src emacs-lisp
+.. #+end_src= blocks to have them part of your emacs config.
+
+*** *Include some nougat*
+
+Browse the =nougat/= directory and find snippets that you find useful. Then anywhere
+within your outline you can include it:
+
+#+begin_src text
+#+INCLUDE: "../nougat/package-management/straight.org"
+#+end_src
+
+If you want to include a specific heading from a nougat file you can do that too:
+
+#+begin_src text
+#+INCLUDE: "../nougat/package-management/straight.org::use-package integration"
+#+end_src
+
+*** *Build your config*
+
+With an outline located at =user-outlines/my-config.org=, then from the root of the
+repository run the build script:
+
+#+begin_src shell
+./bin/build-all my-outline
+less ./user-outlines/my-config.el
+#+end_src
+
+You can copy this to =~/.emacs.d/init.el= or create a symlink to it, or simply run
+=(load-file path-to-el-file)= from your existing config.
+
+
+** Contributing
+Fork me, add your outline, contribute your nougat!
