@@ -11,5 +11,6 @@ echo regenerating HTML
 rm -f "../docs/index.html"
 ln -fn "./user-outlines/$1.html" "../docs/index.html"
 echo setting symlinks
-ln -sfn "./user-outlines/$1.el" "../init.el"
+cd ..
+ln -sfn "./emacs-nougat/user-outlines/$1.el" "./init.el"
 echo done!
