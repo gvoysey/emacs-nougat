@@ -1,11 +1,14 @@
+:display-options:
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 #+language: en
-#+startup: overview indent align
+#+startup: overview indent align content
 #+babel: :cache no
 #+options: ^:nil num:nil tags:nil toc:nil* OS-specific
+
 #+title: Emacs config, org-mode style.
 #+author: grym
 #+description: A literate programming-style exposition of my Emacs configuration
+:end:
 This is the current version of my emacs configuration.  It is rendered to a
 byte-compiled =init.el= by way of a slightly kludgey bash script.
 
@@ -103,6 +106,18 @@ it works fine. [[https://old.reddit.com/r/emacs/comments/3a5kim/emacsclient_does
    (load-theme 'solarized-wombat-dark t)
    :defer 1
   )
+#+end_src
+** material-theme
+
+#+begin_src emacs-lisp
+  ;;    (use-package material-theme
+  ;;     :straight (emacs-material-theme :type git
+  ;;                   :host github
+  ;;                   :repo "cpaulik/emacs-material-theme")
+  ;;     :config
+  ;;   (load-theme 'material t)
+  ;; :defer 1
+  ;;         )
 #+end_src
 
 * emacs
@@ -409,7 +424,10 @@ Add fancy modeline, because why not.
   (winner-mode t)
 #+end_src
 
-** crux
+** pdf-tools
+#+begin_src emacs-lisp
+(use-package pdf-tools)
+#+end_src
 
 #+begin_src emacs-lisp
    (use-package crux
@@ -453,7 +471,7 @@ Override default project directory path.
 #+INCLUDE: "../nougat/packages/org-mode/extras/org-capture.org"
 #+INCLUDE: "../nougat/packages/org-mode/extras/htmlize.org"
 #+INCLUDE: "../nougat/packages/org-mode/extras/toc-org.org"
-#+INCLUDE: "../nougat/packages/org-mode/extras/ox-jira.org"
+##+INCLUDE: "../nougat/packages/org-mode/extras/ox-jira.org"
 #+INCLUDE: "../nougat/packages/org-mode/extras/ox-gfm.org"
 #+INCLUDE: "../nougat/packages/org-mode/extras/ox-beamer.org"
 #+INCLUDE: "../nougat/packages/org-mode/extras/org-avy.org"
@@ -491,23 +509,23 @@ from [[https://blog.aaronbieber.com/2017/03/19/organizing-notes-with-refile.html
 
 #+begin_src emacs-lisp
 (setq org-agenda-files (list my/org-path-name))
-(setq org-refile-targets '((org-agenda-files :maxlevel . 4)))
-
+(setq org-refile-targets '((org-agenda-files :maxlevel . 5)))
 (setq org-refile-allow-creating-parent-nodes 'confirm)
 #+end_src
-*** COMMENT refile with links (broken)
+
+*** refile with links (broken)
 From [[https://gist.github.com/samspills/895c29a1c0f6bf2e66c23149bfcc0f38][this gist]], set things up so that org-refile leaves a backlink behind.  This is
 useful to me for my note style right now (as of <2020-07-08 Wed> because i usually
 want to have a per-date work log tree, but move todos off where they belong under a
 project.)
 
 #+begin_src emacs-lisp
-  ;; (setq org-id-link-to-use-id t)
+  ;; (setq org-id-link-to-org-use-id t)
 
   ;; (defun org-refile--insert-link ( &rest _ )
-  ;;   (org-back-to-heading)
-  ;;   (let* ((refile-region-marker (point-marker))
-  ;;          (source-link (org-store-link nil)))
+  ;;     (org-back-to-heading)
+  ;;     (let* ((refile-region-marker (point-marker))
+  ;;            (source-link (org-store-link nil)))
   ;;     (org-insert-heading)
   ;;     (insert source-link)
   ;;     (goto-char refile-region-marker)))
@@ -515,21 +533,6 @@ project.)
   ;; (advice-add 'org-refile
   ;;             :before
   ;;             #'org-refile--insert-link)
-#+end_src
-
-** COMMENT org-ql
-
-#+begin_src emacs-lisp
-(use-package helm-org
-     )
-#+end_src
-
-#+begin_src emacs-lisp
-(use-package org-ql
- :straight (org-ql :type git
-               :host github
-               :repo "alphapapa/org-ql")
-     )
 #+end_src
 
 ** org-fragtog
@@ -542,6 +545,20 @@ project.)
        )
 (add-hook 'org-mode-hook 'org-fragtog-mode)
 
+#+end_src
+
+** org-ref
+
+#+begin_src emacs-lisp
+  ;; (use-package org-ref
+  ;;  :straight (org-ref :type git
+  ;;                :host github
+  ;;                :repo "jkitchin/org-ref")
+  ;;  :config
+  ;;  (setq reftex-default-bibliography bibtex-completion-bibliography
+  ;;        org-ref-default-bibliography bibtex-completion-bibliography)
+
+  ;;      )
 #+end_src
 
 * helm
@@ -557,14 +574,33 @@ project.)
 ** helm-bibtex
 [[https://github.com/tmalsburg/helm-bibtex#basic-configuration-recommended][helm-bibtex]] provides convenience methods for reference management.
 #+begin_src emacs-lisp
-(use-package helm-bibtex
- :straight (helm-bibtex :type git
-               :host github
-               :repo "tmalsburg/helm-bibtex")
- :config
+      (use-package helm-bibtex
+       :straight (helm-bibtex :type git
+                     :host github
+                     :repo "tmalsburg/helm-bibtex")
+       :config
+       (setq-default bibtex-completion-bibliography
+             (concat my/org-path-name "library.bib"))
+       (setq-default bibtex-completion-pdf-field "Files")
+(setq bibtex-completion-notes-path (concat my/org-path-name "reference-notes"))
+       )
+
+
+#+end_src
+** org-ql
+
+#+begin_src emacs-lisp
+(use-package helm-org
      )
 #+end_src
 
+#+begin_src emacs-lisp
+(use-package org-ql
+ :straight (org-ql :type git
+               :host github
+               :repo "alphapapa/org-ql")
+     )
+#+end_src
 * ivy
 https://github.com/abo-abo/swiper
 #+begin_quote
@@ -697,6 +733,19 @@ LSP is the language server protocol
 
 ** docker
 #+INCLUDE: "../nougat/support/docker/dockerfile-mode.org"
+
+*** docker
+
+#+begin_src emacs-lisp
+(use-package docker
+ :straight (docker :type git
+               :host github
+               :repo "Silex/docker.el")
+ :bind ("C-c d" . docker)
+     )
+#+end_src
+
+
 ** direnv
 #+INCLUDE: "../nougat/support/direnv/direnv.org"
 
@@ -708,37 +757,38 @@ LSP is the language server protocol
 ** window-hydra
 From [[https://github.com/dsedivec/dot-emacs-d/blob/master/lisp/window-hydra.el][here]]
 #+begin_src emacs-lisp
-(use-package windmove)
-(use-package ace-window)
+  (use-package windmove)
+  (use-package ace-window
+    :bind* (("C-<tab>" . ace-window)))
 
-(require 'windmove)
-(require 'ace-window)
+  (require 'windmove)
+  (require 'ace-window)
 
-;;;###autoload (autoload 'window-hydra/body "window-hydra" nil t)
-(defhydra window-hydra (:hint nil)
+  ;;;###autoload (autoload 'window-hydra/body "window-hydra" nil t)
+  (defhydra window-hydra (:hint nil)
+    "
+    ^_i_^                  _1_ single window   _3_^ split window      _b_alance windows
+  _j_   _l_  move buffer   _o_ther window      _\\_ transpose frame   s_w_ap window
+    ^_k_^                  _←_ winner-undo     _0_^ delete window     _→_ winner redo
   "
-  ^_i_^                  _1_ single window   _3_^ split window      _b_alance windows
-_j_   _l_  move buffer   _o_ther window      _\\_ transpose frame   s_w_ap window
-  ^_k_^                  _←_ winner-undo     _0_^ delete window     _→_ winner redo
-"
-  ("i" (aw-swap-window (windmove-find-other-window 'up)))
-  ("j" (aw-swap-window (windmove-find-other-window 'left)))
-  ("l" (aw-swap-window (windmove-find-other-window 'right)))
-  ("k" (aw-swap-window (windmove-find-other-window 'down)))
-  ("1" delete-other-windows)
-  ("3" split-window-right)
-  ("b" balance-windows)
-  ("o" ace-window)
-  ("\\" transpose-frame)
-  ("w" ace-swap-window)
-  ("<left>" winner-undo)
-  ("0" delete-window)
-  ("<right>" winner-redo)
-  ("q" nil))
+    ("i" (aw-swap-window (windmove-find-other-window 'up)))
+    ("j" (aw-swap-window (windmove-find-other-window 'left)))
+    ("l" (aw-swap-window (windmove-find-other-window 'right)))
+    ("k" (aw-swap-window (windmove-find-other-window 'down)))
+    ("1" delete-other-windows)
+    ("3" split-window-right)
+    ("b" balance-windows)
+    ("o" ace-window)
+    ("\\" transpose-frame)
+    ("w" ace-swap-window)
+    ("<left>" winner-undo)
+    ("0" delete-window)
+    ("<right>" winner-redo)
+    ("q" nil))
 
-(provide 'window-hydra)
+  (provide 'window-hydra)
 
-(global-set-key (kbd "C-M-_") 'window-hydra/body)
+  (global-set-key (kbd "C-M-_") 'window-hydra/body)
 #+end_src
 
 ** COMMENT Other hydras

@@ -1,1 +1,1 @@
-emacs-nougat/user-outlines/gvoysey.el
+./user-outlines/gvoysey.el

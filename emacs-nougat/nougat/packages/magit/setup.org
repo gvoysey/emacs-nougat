@@ -6,7 +6,7 @@
                    :host github
                    :repo "magit/magit")
      :bind(("C-x g" . magit-status))
-     :init (setq magit-status-margin '(t "%d %b %y %H:%M" magit-log-margin-width t 14))
+;;     :init (setq magit-status-margin '(nil "%d %b %y %H:%M" magit-log-margin-width t 14))
      :config (setq magit-log-section-commit-count 25)
     )
 
@@ -31,14 +31,18 @@
 )
 #+end_src
 
-* COMMENT forge
+* forge
 Forge interfaces with github and gitlab
 #+begin_src emacs-lisp
-(use-package forge
- :straight (forge :type git
-               :host github
-               :repo "magit/forge")
-:after magit
-)
+        ;; (use-package forge
+        ;;  :straight (forge :type git
+        ;;                :host github
+        ;;                :repo "magit/forge")
+        ;; :after magit
+        ;; )
+      (use-package forge
+        :ensure t
+        :after magit
+        :config (setq forge-add-pullreq-refspec 'ask forge-pull-notifications t
+                         forge-topic-list-limit '(60 . 0)))
 #+end_src
-

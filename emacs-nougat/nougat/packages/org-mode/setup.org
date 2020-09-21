@@ -50,17 +50,21 @@ Getting org to play with straight.el is a little fussy.
     (require 'org)
     (defalias #'org-git-version #'fix-org-git-version)
     (defalias #'org-release #'fix-org-release)
-
+    ;; fontify code in code blocks
+    (setq org-src-fontify-natively t)
     ;; Enable org capture
     (require 'org-capture)
 
-    ;; Enable template expansion
+    ;; Enable template expansion (<s, <q, etc.)
     (require 'org-tempo)
     ;; ignore flycheck files when looking in agenda
     (setq org-agenda-file-regexp "\\`[^\\(.\\|flycheck_\\)].*\\.org\\'")
     ;; log  TODO state changes into the default LOGBOOK drawer.
     (setq org-log-into-drawer t)
+    ;; wrap agenda tags properly for alignment
     (setq org-agenda-tags-column -79)
+    ;; start with follow-mode on in agenda
+    (setq org-agenda-start-with-follow-mode t)
     )
 #+end_src
 
