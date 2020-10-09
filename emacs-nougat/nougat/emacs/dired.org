@@ -3,5 +3,17 @@
 ** dired-sort-dirs
 Dired sorting should lump directories first because I'm used to it.
 #+begin_src emacs-lisp
-(setq dired-listing-switches "-al --group-directories-first")
+    (setq dired-listing-switches "-alh --group-directories-first")
+#+end_src
+** transparently create directories when renaming
+#+begin_src emacs-lisp
+  (defadvice dired-mark-read-file-name (after rv:dired-create-dir-when-needed (prompt dir op-symbol arg files &optional default) activate)
+    (when (member op-symbol '(copy move))
+      (let ((directory-name (if (< 1 (length files))
+                                ad-return-value
+                                (file-name-directory ad-return-value))))
+        (when (and (not (file-directory-p directory-name))
+                   (y-or-n-p (format "directory %s doesn't exist, create it?" directory-name)))
+          (make-directory directory-name t)))))
+
 #+end_src
