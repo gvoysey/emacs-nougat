@@ -6,6 +6,23 @@
           (helm-projectile-switch-project)
         (hydra-projectile/body)))
 
+(defun projectile-run-vterm-other-window (&optional arg)
+  "Invoke `vterm' in the project's root.
+
+Switch to the project specific term buffer if it already exists.
+
+Use a prefix argument ARG to indicate creation of a new process instead."
+  (interactive "P")
+  (let* ((project (projectile-ensure-project (projectile-project-root)))
+         (buffer (projectile-generate-process-name "vterm" arg)))
+    (unless (buffer-live-p (get-buffer buffer))
+      (unless (require 'vterm nil 'noerror)
+        (error "Package 'vterm' is not available"))
+      (projectile-with-default-dir project
+        (vterm-other-window)))
+    (switch-to-buffer buffer)))
+
+
     (defhydra hydra-projectile (:color blue :hint nil)
     "
      ^ ^               ^ ^             ^ ^              ^ ^               ╭─────────┐
@@ -13,7 +30,7 @@
     ─^─^───────────────^─^─────────────^─^──────────────^─^───────────────┴─────────╯
     [_f_] file        [_a_] ag        [_s_] switch     [_C_] clear
     [_r_] recent      [_o_] occur     [_k_] kill       [_x_] remove
-    [_w_] project     [_g_] ggrep      ^ ^             [_X_] cleanup
+    [_w_] project     [_g_] ggrep     [_v_] term       [_X_] cleanup
     [_d_] directory
     ^^^^^^^^                                                      XF86Launch8 to exit
     ^^^^^^^^─────────────────────────────────────────────────────────────────────────
@@ -29,6 +46,7 @@
       ("o"   projectile-multi-occur)
       ("w"   helm-projectile-switch-project "switch project")
       ("g"   helm-grep-do-git-grep)
+      ("v"   projectile-run-vterm-other-window)
       ("r"   helm-projectile-recentf)
       ("x"   projectile-remove-known-project)
       ("X"   projectile-cleanup-known-projects)
