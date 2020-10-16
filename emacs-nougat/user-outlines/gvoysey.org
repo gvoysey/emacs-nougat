@@ -355,12 +355,27 @@ better than nothing.
 ** pinboard
 Manage pinboard pins with [[https://github.com/davep/pinboard.el][pinboard.el]].
 #+begin_src emacs-lisp
-  (use-package pinboard
-   :straight (pinboard :type git
-                 :host github
-                 :repo "davep/pinboard.el")
-   :config (add-to-list 'auth-sources "~/.authinfo" t)
-       )
+    (use-package pinboard
+     :straight (pinboard :type git
+                   :host github
+                   :repo "davep/pinboard.el")
+     :config (add-to-list 'auth-sources "~/.authinfo" t)
+         )
+  ;;https://gist.github.com/khinsen/7ed357eed9b27f142e4fa6f5c4ad45dd
+(require 'org)
+
+(defun org-pinboard-store-link ()
+  "Store a link taken from a pinboard buffer."
+  (when (eq major-mode 'pinboard-mode)
+    (pinboard-with-current-pin pin
+      (org-store-link-props
+       :type "pinboard"
+       :link (alist-get 'href pin)
+       :description (alist-get 'description pin)))))
+
+(org-link-set-parameters "pinboard"
+                         :follow #'browse-url
+                         :store #'org-pinboard-store-link)
 #+end_src
 
 ** powerline
@@ -822,13 +837,12 @@ LSP is the language server protocol
 *** black
 #+CAPTION: blacken lets you auto-blackify your python code
 #+begin_src emacs-lisp
-;;https://github.com/pythonic-emacs/blacken
-(use-package blacken
-:straight (blacken :type git :host github :repo "pythonic-emacs/blacken")
-:init (blacken-mode))
-(add-hook 'python-mode-hook 'blacken-mode)
-(setq blacken-only-if-project-is-blackened t)
-;; (setq blacken-allow-py36 t)
+  ;;https://github.com/pythonic-emacs/blacken
+  (use-package blacken
+    :straight (blacken :type git :host github :repo "pythonic-emacs/blacken")
+    :init (blacken-mode)
+    :hook (python-mode . blacken-mode)
+    :config     (setq blacken-only-if-project-is-blackened t))
 #+end_src
 
 *** pyvenv
