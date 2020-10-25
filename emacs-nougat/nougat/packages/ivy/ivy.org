@@ -1,32 +1,28 @@
 * install and configure
 #+begin_src emacs-lisp
-            (use-package swiper
-  ;;            :straight (swiper :type git
-  ;;                              :host github
-  ;;                              :repo "abo-abo/swiper")
+  (use-package swiper
+    :bind (("C-s" . swiper-isearch)
+           ("C-r" . swiper-backward)
+           ("M-%" . anzu-isearch-query-replace))
+    )
 
-            :bind (("C-s" . swiper-isearch)
-                   ("C-r" . swiper-backward)
-                   ("M-%" . anzu-isearch-query-replace))
-              )
-
-            (use-package ivy
-              :bind ( ("C-x b" . ivy-switch-buffer)))
-            (use-package counsel
-              :bind (("M-x" . counsel-M-x)
-                     ("C-h f" . counsel-apropos)
-                     ("C-x C-f" . counsel-find-file)
-                     ("C-c u" . counsel-unicode-char)
-                     ("C-x C-b" . ibuffer)
-                     ("C-x y" . counsel-yank-pop)
-                     ("C-x C-r" . counsel-recentf)
-                     ("C-x r l" . counsel-bookmark)
-                     ("C-h b" . counsel-descbinds)
-                     ("C-c k" . counsel-ag)
-                     ("C-c n" . counsel-fzf)
-                     )
-            )
-            (use-package ivy-hydra)
+  (use-package ivy
+    :bind ( ("C-x b" . ivy-switch-buffer)))
+  (use-package counsel
+    :bind (("M-x" . counsel-M-x)
+           ("C-h f" . counsel-apropos)
+           ("C-x C-f" . counsel-find-file)
+           ("C-c u" . counsel-unicode-char)
+           ("C-x C-b" . ibuffer)
+           ("C-x y" . counsel-yank-pop)
+           ("C-x C-r" . counsel-recentf)
+           ("C-x r l" . counsel-bookmark)
+           ("C-h b" . counsel-descbinds)
+           ("C-c k" . counsel-ag)
+           ("C-c n" . counsel-fzf)
+           )
+  )
+  (use-package ivy-hydra)
 #+end_src
 
 #+RESULTS:
@@ -49,10 +45,9 @@ Configure
        :config
            )
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  ;; (counsel-projectile-modify-action
-  ;;  'counsel-projectile-switch-project-action
-  ;;  '((default counsel-projectile-switch-project-action-vc)))
-
+  (counsel-projectile-modify-action
+   'counsel-projectile-switch-project-action
+   '((default counsel-projectile-switch-project-action-vc)))
 #+end_src
 
 ** ivy-bibtex
