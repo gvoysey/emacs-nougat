@@ -35,37 +35,40 @@ Getting org to play with straight.el is a little fussy.
 
 *** install package
 #+begin_src emacs-lisp
-  (use-package org
-    :mode ("\\.org\\'" . org-mode)
-    :bind (:map org-mode-map
-                ("M-n" . outline-next-visible-heading)
-                ("M-p" . outline-previous-visible-heading)
-                ("M-RET" . org-insert-heading)
-                ("C-c l" . org-store-link)
-                ("C-c a" . org-agenda)
-                )
-    :config
-    ;; This forces straight to load the package immediately in an attempt to avoid the
-    ;; Org that ships with Emacs.
-    (require 'org)
-    (defalias #'org-git-version #'fix-org-git-version)
-    (defalias #'org-release #'fix-org-release)
-    ;; fontify code in code blocks
-    (setq org-src-fontify-natively t)
-    ;; Enable org capture
-    (require 'org-capture)
+    (use-package org
+      :mode ("\\.org\\'" . org-mode)
+      :bind (:map org-mode-map
+                  ("M-n" . outline-next-visible-heading)
+                  ("M-p" . outline-previous-visible-heading)
+                  ("M-RET" . org-insert-heading)
+                  ("C-c l" . org-store-link)
+                  ("C-c a" . org-agenda)
+                  )
+      :config
+      ;; This forces straight to load the package immediately in an attempt to avoid the
+      ;; Org that ships with Emacs.
+      (require 'org)
+      (defalias #'org-git-version #'fix-org-git-version)
+      (defalias #'org-release #'fix-org-release)
+      ;; fontify code in code blocks
+      (setq org-src-fontify-natively t)
+      ;; Enable org capture
+      (require 'org-capture)
 
-    ;; Enable template expansion (<s, <q, etc.)
-    (require 'org-tempo)
-    ;; ignore flycheck files when looking in agenda
-    (setq org-agenda-file-regexp "\\`[^\\(.\\|flycheck_\\)].*\\.org\\'")
-    ;; log  TODO state changes into the default LOGBOOK drawer.
-    (setq org-log-into-drawer t)
-    ;; wrap agenda tags properly for alignment
-    (setq org-agenda-tags-column -79)
-    ;; start with follow-mode on in agenda
-    (setq org-agenda-start-with-follow-mode t)
-    )
+      ;; Enable template expansion (<s, <q, etc.)
+      (require 'org-tempo)
+      ;; ignore flycheck files when looking in agenda
+      (setq org-agenda-file-regexp "\\`[^\\(.\\|flycheck_\\)].*\\.org\\'")
+      ;; log  TODO state changes into the default LOGBOOK drawer.
+      (setq org-log-into-drawer t)
+      ;; wrap agenda tags properly for alignment
+      (setq org-agenda-tags-column -79)
+      ;; start with follow-mode on in agenda
+      (setq org-agenda-start-with-follow-mode t)
+      ;; add counsel-mode to org speecbars
+      (setq org-use-speed-commands t)
+      (setq org-speed-commands-user (quote (("o" . counsel-outline))))
+      )
 #+end_src
 
 ** look

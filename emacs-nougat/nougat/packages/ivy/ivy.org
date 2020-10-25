@@ -1,21 +1,28 @@
 * install and configure
-Install all packages in the right order
 #+begin_src emacs-lisp
-(use-package ivy
-  :straight (ivy :files (:defaults (:exclude "swiper.el" "counsel.el" "ivy-hydra.el") "doc/ivy-help.org")
-                 :host github :repo "abo-abo/swiper"
-                 ))
-(use-package swiper
-  :straight (swiper :files ("swiper.el") :host github :repo "abo-abo/swiper"
-                    ))
-(use-package counsel
-  :straight (counsel :files ("counsel.el") :host github :repo "abo-abo/swiper"
-                     ))
-(
-use-package ivy-hydra
-  :straight (ivy-hydra :files ("ivy-hydra.el")
-                       :host github :repo "abo-abo/swiper"
-                       ))
+          (use-package swiper
+;;            :straight (swiper :type git
+;;                              :host github
+;;                              :repo "abo-abo/swiper")
+
+          :bind (("C-s" . swiper)
+                 ("C-r" . swiper-backward)
+                 ("M-%" . swiper-query-replace))
+
+            )
+          (use-package ivy)
+          (use-package counsel
+            :bind (("M-x" . counsel-M-x)
+                   ("C-h f" . counsel-apropos)
+                   ("C-x C-f" . counsel-find-file)
+                   ("C-x b" . counsel-buffer-or-recentf)
+                   ("C-x C-b" . ibuffer)
+                   ("C-x y" . counsel-yank-pop)
+                   ("C-x C-r" . counsel-recentf)
+                   ("C-x r l" . counsel-bookmark)
+                   ("C-h b" . counsel-descbinds))
+            )
+          (use-package ivy-hydra)
 #+end_src
 
 Configure
@@ -25,3 +32,34 @@ Configure
 (setq ivy-count-format "(%d/%d) ")
 #+end_src
 
+** counsel-projectile
+
+#+begin_src emacs-lisp
+  (use-package counsel-projectile
+   :straight (counsel-projectile :type git
+                 :host github
+                 :repo "ericdanan/counsel-projectile")
+   :config
+       )
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+#+end_src
+
+** ivy-bibtex
+
+#+begin_src emacs-lisp
+   (use-package ivy-bibtex
+    :straight (ivy-bibtex
+             :files ("ivy-bibtex.el")
+               :type git
+                  :host github
+                  :repo "tmalsburg/helm-bibtex")
+    :config
+  (setq ivy-re-builders-alist
+       '((ivy-bibtex . ivy--regex-ignore-order)
+         (t . ivy--regex-plus)))
+       (setq-default bibtex-completion-bibliography
+             (concat my/org-path-name "library.bib"))
+       (setq-default bibtex-completion-pdf-field "Files")
+(setq bibtex-completion-notes-path (concat my/org-path-name "reference-notes"))
+        )
+#+end_src
