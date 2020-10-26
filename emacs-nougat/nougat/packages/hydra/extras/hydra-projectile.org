@@ -1,56 +1,57 @@
 ** hydra-projectile
 #+begin_src emacs-lisp
-    (defun projectile-dwim ()
-      (interactive)
-      (if (string= "-" (projectile-project-name))
-          (helm-projectile-switch-project)
-        (hydra-projectile/body)))
+      (defun projectile-dwim ()
+        (interactive)
+        (if (string= "-" (projectile-project-name))
+            (helm-projectile-switch-project)
+          (hydra-projectile/body)))
 
-(defun projectile-run-vterm-other-window (&optional arg)
-  "Invoke `vterm' in the project's root.
+  (defun projectile-run-vterm-other-window (&optional arg)
+    "Invoke `vterm' in the project's root.
 
-Switch to the project specific term buffer if it already exists.
+  Switch to the project specific term buffer if it already exists.
 
-Use a prefix argument ARG to indicate creation of a new process instead."
-  (interactive "P")
-  (let* ((project (projectile-ensure-project (projectile-project-root)))
-         (buffer (projectile-generate-process-name "vterm" arg)))
-    (unless (buffer-live-p (get-buffer buffer))
-      (unless (require 'vterm nil 'noerror)
-        (error "Package 'vterm' is not available"))
-      (projectile-with-default-dir project
-        (vterm-other-window)))
-    (switch-to-buffer buffer)))
+  Use a prefix argument ARG to indicate creation of a new process instead."
+    (interactive "P")
+    (let* ((project (projectile-ensure-project (projectile-project-root)))
+           (buffer (projectile-generate-process-name "vterm" arg)))
+      (unless (buffer-live-p (get-buffer buffer))
+        (unless (require 'vterm nil 'noerror)
+          (error "Package 'vterm' is not available"))
+        (projectile-with-default-dir project
+          (vterm-other-window)))
+      (switch-to-buffer buffer)))
 
 
-    (defhydra hydra-projectile (:color blue :hint nil)
-    "
-     ^ ^               ^ ^             ^ ^              ^ ^               ╭─────────┐
-     ^ ^ Open          ^ ^ Search      ^ ^ Buffers      ^ ^ Cache         │ Project │
-    ─^─^───────────────^─^─────────────^─^──────────────^─^───────────────┴─────────╯
-    [_f_] file        [_a_] ag        [_s_] switch     [_C_] clear
-    [_r_] recent      [_o_] occur     [_k_] kill       [_x_] remove
-    [_w_] project     [_g_] ggrep     [_v_] term       [_X_] cleanup
-    [_d_] directory
-    ^^^^^^^^                                                      XF86Launch8 to exit
-    ^^^^^^^^─────────────────────────────────────────────────────────────────────────
-    @ %(projectile-project-root)
-    "
-      ("SPC" nil)
-      ("a"   counsel-projectile-ag)
-      ("s"   counsel-projectile-switch-to-buffer)
-      ("C"   projectile-invalidate-cache)
-      ("d"   counsel-projectile-find-dir)
-      ("f"   counsel-projectile-find-file-dwim)
-      ("k"   projectile-kill-buffers)
-      ("o"   projectile-multi-occur)
-      ("w"   counsel-projectile-switch-project "switch project")
-      ("g"   counsel-projectile-git-grep)
-      ("v"   projectile-run-vterm-other-window)
-      ("r"   counsel-projectile-switch-to-buffer)
-      ("x"   projectile-remove-known-project)
-      ("X"   projectile-cleanup-known-projects)
-      ("q"   nil "cancel" :color blue))
+      (defhydra hydra-projectile (:color blue :hint nil)
+      "
+       ^ ^               ^ ^             ^ ^              ^ ^               ╭─────────┐
+       ^ ^ Open          ^ ^ Search      ^ ^ Buffers      ^ ^ Cache         │ Project │
+      ─^─^───────────────^─^─────────────^─^──────────────^─^───────────────┴─────────╯
+      [_f_] file        [_a_] ag        [_s_] switch     [_C_] clear
+      [_r_] recent      [_o_] occur     [_k_] kill       [_x_] remove
+      [_w_] project     [_g_] ggrep     [_v_] term       [_X_] cleanup
+      [_d_] directory   [_h_] history
+      ^^^^^^^^                                                      XF86Launch8 to exit
+      ^^^^^^^^─────────────────────────────────────────────────────────────────────────
+      @ %(projectile-project-root)
+      "
+        ("SPC" nil)
+        ("a"   counsel-projectile-ag)
+        ("s"   counsel-projectile-switch-to-buffer)
+        ("C"   projectile-invalidate-cache)
+        ("d"   counsel-projectile-find-dir)
+        ("f"   counsel-projectile-find-file-dwim)
+        ("k"   projectile-kill-buffers)
+        ("o"   projectile-multi-occur)
+        ("w"   counsel-projectile-switch-project "switch project")
+        ("g"   counsel-projectile-git-grep)
+        ("v"   projectile-run-vterm-other-window)
+        ("r"   counsel-projectile-switch-to-buffer)
+        ("x"   projectile-remove-known-project)
+        ("X"   projectile-cleanup-known-projects)
+        ("h" magit-log-buffer-file)
+        ("q"   nil "cancel" :color blue))
 
-  (global-set-key (kbd "<XF86Launch8>") 'hydra-projectile/body)
+    (global-set-key (kbd "<XF86Launch8>") 'hydra-projectile/body)
 #+end_src
