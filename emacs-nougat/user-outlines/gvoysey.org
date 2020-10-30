@@ -150,6 +150,24 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
   )
 #+end_src
 
+** treesitter
+#+begin_src emacs-lisp
+(use-package tree-sitter
+  :straight (tree-sitter :type git
+                         :host github
+                         :repo "ubolonton/emacs-tree-sitter"
+                         :files ("lisp/*.el"))
+  :config (add-to-list 'tree-sitter-major-mode-language-alist '(python-mode . python))
+  :hook ((python-mode ) . tree-sitter-hl-mode))
+
+(use-package tree-sitter-langs
+  :straight (tree-sitter-langs :type git
+                               :host github
+                               :repo "ubolonton/emacs-tree-sitter"
+                               :files ("langs/*.el" "langs/queries"))
+  :after tree-sitter)
+#+end_src
+
 ** ibuffer
 #+CAPTION: Configure ibuffer
 #+begin_src emacs-lisp
@@ -198,10 +216,6 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
   ;; Don't ask for confirmation to delete marked buffers
   (setq ibuffer-expert t)
 #+end_src
-
-#+RESULTS:
-: t
-
 
 #+CAPTION: display human-readable sizes for buffers
 #+begin_src emacs-lisp
@@ -944,7 +958,7 @@ LSP is the language server protocol
 ;;(use-package helm-lsp :commands helm-lsp-workspace-symbol)
 ;; if you are ivy user
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+;;(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
 ;; optionally if you want to use debugger
 (use-package dap-mode)
