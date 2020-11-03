@@ -168,6 +168,28 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
   :after tree-sitter)
 #+end_src
 
+** helpful
+
+#+begin_src emacs-lisp
+  (use-package pretty-hydra
+   :straight (pretty-hydra :type git :host github :repo "jerrypnz/major-mode-hydra.el" :files ("pretty-hydra.el"))
+   :config
+   )
+ ;;https://github.com/Wilfred/helpful
+(use-package helpful
+;;  :ensure t
+  :pretty-hydra
+  ((:color teal :quit-key "q")
+   ("Helpful"
+    (("f" helpful-callable "callable")
+     ("v" helpful-variable "variable")
+     ("k" helpful-key "key")
+     ("c" helpful-command "command")
+     ("d" helpful-at-point "thing at point"))))
+
+  :bind ("M-C-h" . helpful-hydra/body))
+#+end_src
+
 ** ibuffer
 #+CAPTION: Configure ibuffer
 #+begin_src emacs-lisp
@@ -451,8 +473,9 @@ nominally hilight lines that have todo in them
 ** Highlight row
 Hilight the row the mark is on.
 #+begin_src emacs-lisp
-(global-hl-line-mode)
-(set-face-background 'hl-line "gray22")
+  (global-hl-line-mode)
+  (set-face-background 'hl-line "gray22")
+(setq-default indicate-empty-lines t)
 #+end_src
 
 ** control font size with mouse
@@ -634,7 +657,7 @@ Add fancy modeline, because why not.
     (dired-rainbow-define document    "#9561e2" ("docm" "doc" "docx" "odb" "odt" "pdb" "pdf" "ps" "rtf" "djvu" "epub" "odp" "ppt" "pptx"))
     (dired-rainbow-define markdown    "#ffed4a" ("org" "etx" "info" "markdown" "md" "mkd" "nfo" "pod" "rst" "tex" "textfile" "txt"))
     (dired-rainbow-define database    "#6574cd" ("xlsx" "xls" "csv" "accdb" "db" "mdb" "sqlite" "nc"))
-    (dired-rainbow-define media       "#de751f" ("mp3" "mp4" "MP3" "MP4" "avi" "mpeg" "mpg" "flv" "ogg" "mov" "mid" "midi" "wav" "aiff" "flac" "webm" "mkv"))
+    (dired-rainbow-define media       "#de751f" ("mp3" "mp4" "MP3" "MP4" "avi" "mpeg" "mpg" "flv" "ogg" "mov" "mid" "midi" "wav" "aiff" "flac" "webm" "mkv" "m4a"))
     (dired-rainbow-define image       "#f66d9b" ("tiff" "tif" "cdr" "gif" "ico" "jpeg" "jpg" "png" "psd" "eps" "svg" "webp"))
     (dired-rainbow-define log         "#c17d11" ("log"))
     (dired-rainbow-define shell       "#f6993f" ("awk" "bash" "bat" "sed" "sh" "zsh" "vim"))
