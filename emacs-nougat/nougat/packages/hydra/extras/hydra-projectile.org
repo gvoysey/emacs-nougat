@@ -1,11 +1,5 @@
 ** hydra-projectile
 #+begin_src emacs-lisp
-                   ;; (defun projectile-dwim ()
-                   ;;   (interactive)
-                   ;;   (if (string= "-" (projectile-project-name))
-                   ;;       (helm-projectile-switch-project)
-                   ;;     (hydra-projectile/body)))
-
   (defun projectile-run-vterm-other-window (&optional arg)
     "Invoke `vterm' in the project's root.
      Switch to the project specific term buffer if it already exists.
@@ -26,68 +20,31 @@
 
   (pretty-hydra-define hydra-projectile (:title "Projectile" :quit-key "<XF86Launch8>")
     ("Open"
-     (("f"   counsel-projectile-find-file-dwim)
-      ("z"   counsel-projectile-switch-to-buffer)
+     (("f"   counsel-projectile-find-file-dwim "find file")
+      ("z"   counsel-projectile-switch-to-buffer "switch buffer")
       ("w"   counsel-projectile-switch-project "switch project")
-      ("v"   projectile-run-vterm-other-window)
-      ("d"   dired-open-other-window))
+      ("v"   projectile-run-vterm-other-window "vterm in project")
+      ("d"   dired-open-other-window "dired in project"))
 
     "Search"
-    (("a"   counsel-projectile-rg)
-     ("A" counsel-rg)
-     ("o"   projectile-multi-occur)
-     ("g"   counsel-projectile-git-grep)
-     ("r" counsel-fzf)
+    (("a"   counsel-projectile-rg "rg in project")
+     ("A" counsel-rg "rg")
+     ("o"   projectile-multi-occur "occur in project")
+     ("g"   counsel-projectile-git-grep "git grep")
+     ("r" counsel-fzf "fzf")
      )
 
     "Buffers"
-    (("s"   counsel-projectile-switch-to-buffer)
-     ("k"   projectile-kill-buffers)
-     ("h" magit-log-buffer-file)
-     ("i" (ibuffer t nil nil t)))
+    (("k"   projectile-kill-buffers "kill project")
+     ("h" magit-log-buffer-file "git file log")
+     ("i" (ibuffer t nil nil t) "ibuffer"))
 
     "Projectile"
-    (("C"   projectile-invalidate-cache)
-     ("x"   projectile-remove-known-project)
-     ("X"   projectile-cleanup-known-projects))
+    (("C"   projectile-invalidate-cache "rebuild cache")
+     ("x"   projectile-remove-known-project "remove projects")
+     ("X"   projectile-cleanup-known-projects "cleanup"))
     )
   )
-
-  ;;  (defhydra hydra-projectile (:color blue :hint nil)
-  ;;          "
-  ;;           ^ ^               ^ ^             ^ ^              ^ ^            ╭────────────┐
-  ;;           ^ ^ Open          ^ ^ Search      ^ ^ Buffers      ^ ^ Cache      │ Projectile │
-  ;;          ─^─^───────────────^─^─────────────^─^──────────────^─^────────────┴────────────╯
-  ;;          [_f_] file        [_a_] proj-rg        [_s_] switch     [_C_] clear
-  ;;          [_z_] recent      [_o_] occur     [_k_] kill       [_x_] remove
-  ;;          [_w_] project     [_g_] ggrep     [_v_] term       [_X_] cleanup
-  ;;          [_d_] directory   [_h_] history   [_i_] ibuffer    [_r_] fzf
-  ;;                            [_A_] rg
-  ;;          ^^^^^^^^
-  ;;          ^^^^^^^^─────────────────────────────────────────────────────────────────────────
-  ;;          @ %(projectile-project-root)
-  ;;          "
-  ;;            ("SPC" nil)
-  ;;            ("a"   counsel-projectile-rg)
-  ;;            ("A" counsel-rg)
-  ;;            ("s"   counsel-projectile-switch-to-buffer)
-  ;;            ("C"   projectile-invalidate-cache)
-  ;;            ("d"   (lambda () (interactive) (save-excursion (with-selected-window (split-window-right)(balance-windows) (dired  default-directory)))))
-  ;;            ("f"   counsel-projectile-find-file-dwim)
-  ;;            ("k"   projectile-kill-buffers)
-  ;;            ("o"   projectile-multi-occur)
-  ;;            ("w"   counsel-projectile-switch-project "switch project")
-  ;;            ("g"   counsel-projectile-git-grep)
-  ;;            ("v"   projectile-run-vterm-other-window)
-  ;;            ("z"   counsel-projectile-switch-to-buffer)
-  ;;            ("x"   projectile-remove-known-project)
-  ;;            ("X"   projectile-cleanup-known-projects)
-  ;;            ("h" magit-log-buffer-file)
-  ;;            ("i" (ibuffer t nil nil t))
-  ;;            ("r" (counsel-fzf))
-  ;; ;;           ("i" (lambda () (interactive) (save-excursion (with-selected-window (split-window-right)(balance-windows)(ibuffer)))))
-  ;;            ("<XF86Launch8>"   nil "cancel" :color blue)
-  ;;            )
 
   (global-set-key (kbd "<XF86Launch8>") 'hydra-projectile/body)
 #+end_src
