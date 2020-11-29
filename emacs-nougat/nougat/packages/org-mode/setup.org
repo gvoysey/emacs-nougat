@@ -84,10 +84,22 @@ require subscripts to need curlies: camel_case won't display weirdly this way
 
 *** pretty heading bullets
 #+begin_src emacs-lisp
-  (use-package org-bullets
-    :config
-    (add-hook 'org-mode-hook 'org-bullets-mode))
+  ;; (use-package org-bullets
+  ;;   :config
+  ;;   (add-hook 'org-mode-hook 'org-bullets-mode))
 #+end_src
+#+begin_src emacs-lisp
+   (use-package org-superstar
+    :straight (org-superstar :type git :host github :repo "integral-dw/org-superstar-mode")
+    :after org
+    :init
+;;    (org-superstar-configure-like-org-bullets)
+;;    (setq org-hide-leading-stars t)
+    :config
+    (add-hook 'org-mode-hook 'org-superstar-mode)
+    )
+#+end_src
+
 
 *** theme customizations
 #+begin_src emacs-lisp

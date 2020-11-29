@@ -1,5 +1,5 @@
 :display-options:
-#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+language: en
 #+startup: overview indent align content
 #+babel: :cache no :results output silent
@@ -150,11 +150,77 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
   )
 #+end_src
 
+** jenkinsfile-mode
+#+begin_src emacs-lisp
+(use-package groovy-mode)
+(use-package jenkinsfile-mode
+ :straight (jenkinsfile-mode :type git :host github :repo "john2x/jenkinsfile-mode")
+:after groovy-mode
+ )
+#+end_src
+
+** insert-kaomoji
+#+begin_src emacs-lisp
+  (use-package insert-kaomoji
+  :bind ("C-x 8 k" . insert-kaomoji))
+#+end_src
+
+** theme-changer
+#+begin_src emacs-lisp
+  ;; (use-package heaven-and-hell
+  ;;   :ensure t
+  ;;   :init
+  ;;   (setq heaven-and-hell-theme-type 'dark) ;; Omit to use light by default
+  ;;   (setq heaven-and-hell-themes
+  ;;         '((light . material-light)
+  ;;           (dark . solarized-wombat-dark))) ;; Themes can be the list: (dark . (tsdh-dark wombat))
+  ;;   ;; Optionall, load themes without asking for confirmation.
+  ;;   (setq heaven-and-hell-load-theme-no-confirm t)
+  ;;   :hook (after-init . heaven-and-hell-init-hook)
+  ;;   :bind (("C-c <f6>" . heaven-and-hell-load-default-theme)
+  ;;          ("<f6>" . heaven-and-hell-toggle-theme)))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; (defun pre-tidy-up-theme-sensitive-changes (current-theme)
+  ;;   "Theme switching likes to have the previous themes cleared off."
+  ;;   (disable-theme current-theme))
+
+  ;; (defun post-tidy-up-theme-sensitive-changes (current-theme)
+  ;;   "Check what color the hl-line should be."
+  ;;   (org-mode-restart)
+  ;;   (if (equal current-theme 'material-light)
+  ;;       (set-face-background 'hl-line "ivory3")
+  ;;     (set-face-background 'hl-line "gray22")))
+
+  ;; (use-package theme-changer
+  ;;   :straight (theme-changer :type git :host github :repo "mplscorwin/theme-changer")
+  ;;   :init
+  ;;   (setq calendar-location-name "New York, NY")
+  ;;   (setq calendar-latitude 44.26)
+  ;;   (setq calendar-longitude -72.57)
+  ;;   (add-hook 'theme-changer-post-change-functions #'post-tidy-up-theme-sensitive-changes)
+  ;;   ​
+  ;;   :config
+  ;;   (change-theme 'material-light 'solarized-wombat-dark)
+  ;;   )
+
+            ;; (Use-package theme-changer
+            ;;   :straight (theme-changer :type git :host github :repo "hadronzoo/theme-changer")
+            ;;   :config
+            ;;   (setq calendar-location-name "New York, NY")
+            ;;   (setq calendar-latitude 44.26)
+            ;;   (setq calendar-longitude -72.57)
+            ;;   (setq theme-changer-post-change-functions (list 'org-mode-restart 'post-tidy-up-theme-sensitive-changes))
+            ;;   (setq theme-changer-pre-change-functions (list 'pre-tidy-up-theme-sensitive-changes))
+            ;;   (change-theme 'material-light 'solarized-wombat-dark)
+            ;;   )
+#+end_src
+
 ** bongo
 #+begin_src emacs-lisp
 (use-package bongo)
 #+end_src
-
 
 ** auto-dim-other-buffers
 
@@ -214,52 +280,52 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
 ** ibuffer
 #+CAPTION: Configure ibuffer
 #+begin_src emacs-lisp
-(use-package ibuffer-projectile)
+  (use-package ibuffer-projectile)
 
-    (global-set-key (kbd "C-x C-b") 'ibuffer)
-    (setq ibuffer-saved-filter-groups
-          (quote (("default"
-                   ("dired" (mode . dired-mode))
-                   ("org" (name . "^.*org$"))
-                   ("shell" (or
-                             (mode . eshell-mode)
-                             (mode . shell-mode)
-                             (mode . vterm-mode)))
-                   ("git"    (or (name . "^\*magit")
-                                 (name . "^\magit")))
-                   ("programming" (or
-                                   (mode . python-mode)
-                                   (mode . c++-mode)
-                                   (mode . makefile-gmake-mode)
-                                   (mode . latex-mode)
+      (global-set-key (kbd "C-x C-b") 'ibuffer)
+      (setq ibuffer-saved-filter-groups
+            (quote (("default"
+                     ("dired" (mode . dired-mode))
+                     ("org" (name . "^.*org$"))
+                     ("shell" (or
+                               (mode . eshell-mode)
+                               (mode . shell-mode)
+                               (mode . vterm-mode)))
+                     ("git"    (or (name . "^\*magit")
+                                   (name . "^\magit")))
+                     ("programming" (or
+                                     (mode . python-mode)
+                                     (mode . c++-mode)
+                                     (mode . makefile-gmake-mode)
+                                     (mode . latex-mode)
 
-                                   (mode . gnu-makefile-mode)))
-                   ("data / configs " (or       (mode . json-mode)
-                                                (mode . yaml-mode)))
-                   ("emacs" (or
-                             (name . "^\\*scratch\\*$")
-                             (name . "^\\*Messages\\*$")
-                             (name . "^\\*straight-process\\*$")
-                             (name . "^\\*Calendar\\*$")
-                             (name . "^\\*lsp*\\*$")
-                             (name . "^\\*pyls*\\*$")
-                             )
-                    )
-                   ))))
-    (add-hook 'ibuffer-mode-hook
-    (lambda ()
-    (ibuffer-auto-mode 1)
-    (ibuffer-switch-to-saved-filter-groups "default")))
+                                     (mode . gnu-makefile-mode)))
+                     ("data / configs " (or       (mode . json-mode)
+                                                  (mode . yaml-mode)))
+                     ("emacs" (or
+                               (name . "^\\*scratch\\*$")
+                               (name . "^\\*Messages\\*$")
+                               (name . "^\\*straight-process\\*$")
+                               (name . "^\\*Calendar\\*$")
+                               (name . "^\\*lsp*\\*$")
+                               (name . "^\\*pyls*\\*$")
+                               )
+                      )
+                     ))))
+      (add-hook 'ibuffer-mode-hook
+      (lambda ()
+      (ibuffer-auto-mode 1)
+      (ibuffer-switch-to-saved-filter-groups "default")))
 
-    (require 'ibuf-ext)
-    (add-to-list 'ibuffer-never-show-predicates "^\\*")
-    ;; don't show these
-    ;(add-to-list 'ibuffer-never-show-predicates "zowie")
-    ;; Don't show filter groups if there are no buffers in that group
-    (setq ibuffer-show-empty-filter-groups nil)
+      (require 'ibuf-ext)
+      ;; (add-to-list 'ibuffer-never-show-predicates "^\\*")
+      ;; don't show these
+      ;(add-to-list 'ibuffer-never-show-predicates "zowie")
+      ;; Don't show filter groups if there are no buffers in that group
+      (setq ibuffer-show-empty-filter-groups nil)
 
-    ;; Don't ask for confirmation to delete marked buffers
-    (setq ibuffer-expert t)
+      ;; Don't ask for confirmation to delete marked buffers
+      (setq ibuffer-expert t)
 #+end_src
 
 #+CAPTION: display human-readable sizes for buffers
@@ -485,8 +551,8 @@ nominally hilight lines that have todo in them
    :config
          (global-hl-todo-mode)
          (setq hl-todo-keyword-faces
-               '(("todo"   . "#FF0000")
-                 ("fixme"  . "#FF0000"))
+               '(("todo.*"   . "#FF0000")
+                 ("fixme.*"  . "#FF0000"))
          )
          )
 #+end_src
@@ -1034,6 +1100,14 @@ LSP is the language server protocol
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
 #+end_src
+** format-all-the-code
+#+begin_src emacs-lisp
+(use-package format-all
+ :straight (format-all :type git :host github :repo "lassik/emacs-format-all-the-code")
+
+ )
+#+end_src
+
 
 ** COMMENT CSV
 #+INCLUDE: "../nougat/packages/csv-mode/csv-mode.org"
