@@ -1,8 +1,39 @@
 * lispy-mode
 #+begin_src emacs-lisp
-  (use-package lispy
-    :config
-    (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1)))
-    (add-hook 'lisp-interaction-mode-hook (lambda () (lispy-mode 1))))
+  ;; (use-package lispy
+  ;;   :config
+  ;;   (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1)))
+  ;;   (add-hook 'lisp-interaction-mode-hook (lambda () (lispy-mode 1))))
 #+end_src
+#+begin_src emacs-lisp
+  (use-package general)
+  (use-package lispy
+    :general
+    (:keymaps 'lispy-mode-map
+              "C-j" #'avy-goto-char-timer)
 
+      :hook
+      (emacs-lisp-mode . lispy-mode)
+
+      :config
+      (use-package adjust-parens
+        ;; Bind my `adjust-parens' commands as lispy special commands.  NOTE: `adjust-parens' lacks
+        ;; autoloads for these commands, so we have to force the package to load before binding its
+        ;; commands.
+        :config
+        (lispy-define-key lispy-mode-map-special "H" 'lisp-dedent-adjust-parens
+        (lispy-define-key lispy-mode-map-special "L" 'lisp-indent-adjust-parens))
+        ;; [2019-09-06 Fri 10:05]  Trying out W/S bindings too.
+        ;; (cl-loop for (key . def) in (alist "H" 'lisp-dedent-adjust-parens
+        ;;                                    "W" 'lisp-dedent-adjust-parens
+        ;;                                    "L" 'lisp-indent-adjust-parens
+        ;;                                    "S" 'lisp-indent-adjust-parens)
+        ;;          do (lispy-define-key lispy-mode-map-special key def))
+        )
+
+      (progn
+        ;; I use these keys!
+        (dolist (key '("C-1" "C-2" "C-3"))
+          (define-key lispy-mode-map-c-digits (kbd key) nil))
+        (lispy-set-key-theme '(special lispy c-digits))))
+#+end_src

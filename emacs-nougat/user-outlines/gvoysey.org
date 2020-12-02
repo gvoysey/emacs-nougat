@@ -157,6 +157,65 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
       :hook ((org-mode) . org-recent-headings-mode )      )
 #+end_src
 
+** COMMENT prism
+#+begin_src emacs-lisp
+  (use-package prism
+    :straight (prism :type git :host github :repo "alphapapa/prism.el")
+
+    :hook ((emacs-lisp-mode) . prism-mode )
+    :config
+    (prism-set-colors
+      :num 24
+      :colors (list "#ffb4ac" "#e5786d" "#834c98" "#a4b5e6" "#7ec98f" "#8ac6f2")
+    ;;   ;; :desaturations (cl-loop for i from 0 below 24
+    ;;   ;;                        collect (* i 2.5))
+    ;;   ;; :lightens (cl-loop for i from 0 below 24
+    ;;   ;;                   collect (* i 2.5))
+    ;;   )
+   )
+#+end_src
+** rainbow-mode
+#+begin_src emacs-lisp
+  (use-package rainbow-mode
+    :hook ((org-mode emacs-lisp-mode) . rainbow-mode))
+#+end_src
+** expand-region
+#+begin_src emacs-lisp
+    (use-package expand-region
+     :straight (expand-region :type git :host github :repo "magnars/expand-region.el")
+    :bind (("M-2" . er/expand-region)
+           ("M-3" . er/contract-region)
+    ))
+  (setq pending-delete-mode t)
+#+end_src
+** highlight-indent-guides
+#+begin_src emacs-lisp
+     (use-package highlight-indent-guides
+      :straight (highlight-indent-guides :type git :host github :repo "DarthFennec/highlight-indent-guides")
+      :hook ((python-mode emacs-lisp-mode) . highlight-indent-guides-mode)
+      :config
+      (setq highlight-indent-guides-method 'bitmap)
+      (setq highlight-indent-guides-responsive 'stack)
+      )
+#+end_src
+** restclient
+#+begin_src emacs-lisp
+  (use-package restclient
+   :straight (restclient :type git :host github :repo "pashky/restclient.el")
+   )
+(use-package ob-restclient
+ :straight (ob-restclient :type git :host github :repo "alf/ob-restclient.el")
+ )
+#+end_src
+** zoom-window
+#+begin_src emacs-lisp
+  (use-package zoom-window
+   :straight (zoom-window :type git :host github :repo "emacsorphanage/zoom-window")
+   :config
+ (setq zoom-window-mode-line-color "medium sea green"
+   ))
+#+end_src
+
 ** jenkinsfile-mode
 #+begin_src emacs-lisp
 (use-package groovy-mode)
@@ -189,39 +248,39 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
 #+end_src
 
 #+begin_src emacs-lisp
-  ;; (defun pre-tidy-up-theme-sensitive-changes (current-theme)
-  ;;   "Theme switching likes to have the previous themes cleared off."
-  ;;   (disable-theme current-theme))
+    ;; (defun pre-tidy-up-theme-sensitive-changes (current-theme)
+    ;;   "Theme switching likes to have the previous themes cleared off."
+    ;;   (disable-theme current-theme))
 
-  ;; (defun post-tidy-up-theme-sensitive-changes (current-theme)
-  ;;   "Check what color the hl-line should be."
-  ;;   (org-mode-restart)
-  ;;   (if (equal current-theme 'material-light)
+    ;; (defun post-tidy-up-theme-sensitive-changes (current-theme)
+    ;;   "Check what color the hl-line should be."
+    ;;   (org-mode-restart)
+    ;;   (if (equal current-theme 'material-light)
   ;;       (set-face-background 'hl-line "ivory3")
-  ;;     (set-face-background 'hl-line "gray22")))
+    ;;     (set-face-background 'hl-line "gray22")))
 
-  ;; (use-package theme-changer
-  ;;   :straight (theme-changer :type git :host github :repo "mplscorwin/theme-changer")
-  ;;   :init
-  ;;   (setq calendar-location-name "New York, NY")
-  ;;   (setq calendar-latitude 44.26)
-  ;;   (setq calendar-longitude -72.57)
-  ;;   (add-hook 'theme-changer-post-change-functions #'post-tidy-up-theme-sensitive-changes)
-  ;;   ​
-  ;;   :config
-  ;;   (change-theme 'material-light 'solarized-wombat-dark)
-  ;;   )
+    ;; (use-package theme-changer
+    ;;   :straight (theme-changer :type git :host github :repo "mplscorwin/theme-changer")
+    ;;   :init
+    ;;   (setq calendar-location-name "New York, NY")
+    ;;   (setq calendar-latitude 44.26)
+    ;;   (setq calendar-longitude -72.57)
+    ;;   (add-hook 'theme-changer-post-change-functions #'post-tidy-up-theme-sensitive-changes)
+    ;;   ​
+    ;;   :config
+    ;;   (change-theme 'material-light 'solarized-wombat-dark)
+    ;;   )
 
-            ;; (Use-package theme-changer
-            ;;   :straight (theme-changer :type git :host github :repo "hadronzoo/theme-changer")
-            ;;   :config
-            ;;   (setq calendar-location-name "New York, NY")
-            ;;   (setq calendar-latitude 44.26)
-            ;;   (setq calendar-longitude -72.57)
-            ;;   (setq theme-changer-post-change-functions (list 'org-mode-restart 'post-tidy-up-theme-sensitive-changes))
-            ;;   (setq theme-changer-pre-change-functions (list 'pre-tidy-up-theme-sensitive-changes))
-            ;;   (change-theme 'material-light 'solarized-wombat-dark)
-            ;;   )
+              ;; (Use-package theme-changer
+              ;;   :straight (theme-changer :type git :host github :repo "hadronzoo/theme-changer")
+              ;;   :config
+              ;;   (setq calendar-location-name "New York, NY")
+              ;;   (setq calendar-latitude 44.26)
+              ;;   (setq calendar-longitude -72.57)
+              ;;   (setq theme-changer-post-change-functions (list 'org-mode-restart 'post-tidy-up-theme-sensitive-changes))
+              ;;   (setq theme-changer-pre-change-functions (list 'pre-tidy-up-theme-sensitive-changes))
+              ;;   (change-theme 'material-light 'solarized-wombat-dark)
+              ;;   )
 #+end_src
 
 ** bongo
