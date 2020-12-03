@@ -58,7 +58,8 @@ forces it.
 * boilerplate
 Set up some variables pointing to where normal lab notebook things live.
 ** my/org-path-name
-Part of this configuration's purpose is to use emacs as a digital lab notebook.
+Part of this configuration's purpose is to use emacs as a digital lab notebook, which
+is a git repo.  This is its canonical location.
 #+begin_src emacs-lisp
   (defvar my/org-path-name (expand-file-name "~/lab-notebook/"))
 #+end_src
@@ -157,6 +158,10 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
       :hook ((org-mode) . org-recent-headings-mode )      )
 #+end_src
 
+** smex
+#+begin_src emacs-lisp
+(use-package smex)
+#+end_src
 ** COMMENT prism
 #+begin_src emacs-lisp
   (use-package prism
@@ -1118,22 +1123,31 @@ for quickly applying export settings, annotating code blocks, and the like.
 ** github
 *** gist
 #+INCLUDE: "../nougat/packages/github/gist.org"
-* COMMENT multiple-cursors
-#+INCLUDE: "../nougat/packages/multiple-cursors/multiple-cursors.org"
-* COMMENT phi-search
-This is an incremental search which works with multiple cursors and replaces the
-normal bindings.
+* multiple-cursors
+[[https://github.com/magnars/multiple-cursors.el][Multiple Cursors]] is an emacs package to provide Sublime Text-like multiple selections.
 
+This section isn't very configured yet.
 #+begin_src emacs-lisp
-(use-package phi-search)
-(require 'phi-search)
-(require 'phi-replace)
+  (use-package region-bindings-mode)
 #+end_src
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-s") 'phi-search)
-(global-set-key (kbd "C-r") 'phi-search-backward)
-(global-set-key (kbd "M-%") 'phi-replace-query)
+  (use-package multiple-cursors
+    :bind (:map region-bindings-mode-map
+                ("a" . mc/mark-all-like-this)
+                ("p" . mc/mark-previous-like-this)
+                ("n" . mc/mark-next-like-this)
+                ("P" . mc/unmark-previous-like-this)
+                ("N" . mc/unmark-next-like-this)
+                ("[" . mc/cycle-backward)
+                ("]" . mc/cycle-forward)
+                ("m" . mc/mark-more-like-this-extended)
+                ("h" . mc-hide-unmatched-lines-mode)
+                ("\\" . mc/vertical-align-with-space)
+                ("#" . mc/insert-numbers) ; use num prefix to set the starting number
+                ("^" . mc/edit-beginnings-of-lines)
+                ("$" . mc/edit-ends-of-lines))
+  )
 #+end_src
 
 * pandoc mode
