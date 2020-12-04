@@ -21,12 +21,15 @@ Some things only need to be tweaked for certain OSes, and happen early -- in thi
 case, before the package manager is initialized.
 ** mac os
 *** Disable ⌘-q
-Accidentally closing your editor window when you don't mean to just sucks.
+Accidentally closing your editor window when you don't mean to just sucks.  In Linux,
+we can handle this at the desktop environment/window manager level; on macOS, it's
+easier to just disable the key inside of emacs itself.
 #+begin_src emacs-lisp
-(global-unset-key (kbd "s-q"))
+  (when (eq system-type 'darwin)
+    (global-unset-key (kbd "s-q")))
 #+end_src
 
-** linux
+** COMMENT linux
 *** Disable doc-view-mode defaults for pdf files
 I prefer side-by-side pdf viewers over the in-emacs option for rendering PDFs.  This
 forces it.
@@ -55,7 +58,7 @@ forces it.
        (ensc/mailcap-mime-data-filter 'ensc/no-pdf-doc-view-filter))))
 #+end_src
 
-* boilerplate
+* personal variables
 Set up some variables pointing to where normal lab notebook things live.
 ** my/org-path-name
 Part of this configuration's purpose is to use emacs as a digital lab notebook, which
@@ -65,12 +68,14 @@ is a git repo.  This is its canonical location.
 #+end_src
 
 ** my/org-file-name
+Set up a convenience function for path manipulation inside the lab notebook.
 #+begin_src emacs-lisp
   (defun my/make-org-file-name (file-name)
     (concat my/org-path-name file-name))
 #+end_src
 
 ** my/notes-file-name
+The lab notebook in question has a central org-mode document where most of the work happens.
 #+begin_src emacs-lisp
   (defvar my/notes-file-name (my/make-org-file-name "notes.org"))
 #+end_src
@@ -137,6 +142,14 @@ Configuration related core editor functions are here.
 #+INCLUDE: "../nougat/emacs/popwin.org" :minlevel 2
 #+INCLUDE: "../nougat/emacs/ws-butler.org" :minlevel 2
 #+INCLUDE: "../nougat/emacs/avy.org" :minlevel 2
+
+** general
+#+begin_src emacs-lisp
+    (use-package general
+      :straight (general :type git :host github :repo "noctuid/general.el"))
+#+end_src
+
+#+RESULTS:
 
 ** exec-path from shell
 [[https://github.com/purcell/exec-path-from-shell][This]] is a GNU Emacs library to ensure environment variables inside Emacs look the
@@ -724,7 +737,7 @@ Add fancy modeline, because why not.
                   :repo "bbatsov/crux")
     :config
   (global-set-key (kbd "C-<backspace>") #'crux-kill-line-backwards)
-  (global-set-key (kbd "C-c S") #'crux-find-shell-init-file)
+;;  (global-set-key (kbd "C-c S") #'crux-find-shell-init-file)
         )
 #+end_src
 ** transient-dwim
@@ -761,13 +774,13 @@ Add fancy modeline, because why not.
     (use-package dired-filter
       :after    dired
       :bind (:map dired-mode-map
+                  ("h" . dired-filter-by-dot-files)
                   ("/" . dired-filter-map)
                   ("f" . grym-dired-filter-group-mode-off)
-                  ("h" . dired-filter-by-dot-files)
-  ;;                ("H" . dired-filter-pop-all)
                   )
       :hook ((dired-mode . dired-filter-mode)
              (dired-mode . dired-filter-group-mode)
+             (dired-mode . dired-filter-by-dot-files)
              )
       :init (setq dired-filter-revert 'never
                   dired-filter-group-saved-groups
@@ -834,10 +847,11 @@ Add fancy modeline, because why not.
     (use-package dired-narrow
       :after    dired
       :bind (:map dired-mode-map
-                  ("\\" . dired-narrow)
-                  ("<down>"  . dired-narrow-next-file)
-                  ("<up>"    . dired-narrow-previous-file)
-                  ("<right>" . dired-narrow-enter-directory)))
+                  ("\\" . dired-narrow) ;; g reverts
+                  ;; ("<down>"  . dired-narrow-next-file)
+                  ;; ("<up>"    . dired-narrow-previous-file)
+                  ;; ("<right>" . dired-narrow-enter-directory)
+                  ))
     (use-package dired-collapse
       :hook 'dired-mode-hook)
     ;;preview files in dired
@@ -1048,56 +1062,6 @@ project.)
   ;;      )
 #+end_src
 
-** org-ql
-
-#+begin_src emacs-lisp
-(use-package org-ql
- :straight (org-ql :type git :host github :repo "alphapapa/org-ql")
- :config
- )
-#+end_src
-
-
-* COMMENT helm
-##+INCLUDE: "../nougat/packages/helm/setup.org"
-##+INCLUDE: "../nougat/packages/helm/extras/ace-jump-helm-line.org"
-##+INCLUDE: "../nougat/packages/helm/extras/helm-ag.org" :
-##+INCLUDE: "../nougat/packages/helm/extras/helm-bookmark.org"
-##+INCLUDE: "../nougat/packages/helm/extras/helm-company.org"
-##+INCLUDE: "../nougat/packages/helm/extras/helm-descbinds.org"
-##+INCLUDE: "../nougat/packages/helm/extras/helm-flyspell.org"
-##+INCLUDE: "../nougat/packages/helm/extras/helm-org-rifle.org"
-##+INCLUDE: "../nougat/packages/helm/extras/helm-projectile.org"
-** COMMENT helm-bibtex
-[[https://github.com/tmalsburg/helm-bibtex#basic-configuration-recommended][helm-bibtex]] provides convenience methods for reference management.
-#+begin_src emacs-lisp
-      (use-package helm-bibtex
-       :straight (helm-bibtex :type git
-                     :host github
-                     :repo "tmalsburg/helm-bibtex")
-       :config
-       (setq-default bibtex-completion-bibliography
-             (concat my/org-path-name "library.bib"))
-       (setq-default bibtex-completion-pdf-field "Files")
-(setq bibtex-completion-notes-path (concat my/org-path-name "reference-notes"))
-       )
-
-
-#+end_src
-** COMMENT org-ql
-
-#+begin_src emacs-lisp
-(use-package helm-org
-     )
-#+end_src
-
-#+begin_src emacs-lisp
-(use-package org-ql
- :straight (org-ql :type git
-               :host github
-               :repo "alphapapa/org-ql")
-     )
-#+end_src
 * ivy
 https://github.com/abo-abo/swiper
 #+begin_quote
@@ -1126,7 +1090,6 @@ for quickly applying export settings, annotating code blocks, and the like.
 * multiple-cursors
 [[https://github.com/magnars/multiple-cursors.el][Multiple Cursors]] is an emacs package to provide Sublime Text-like multiple selections.
 
-This section isn't very configured yet.
 #+begin_src emacs-lisp
   (use-package region-bindings-mode)
 #+end_src
@@ -1184,11 +1147,8 @@ LSP is the language server protocol
 #+begin_src emacs-lisp
 (use-package format-all
  :straight (format-all :type git :host github :repo "lassik/emacs-format-all-the-code")
-
  )
 #+end_src
-
-
 ** COMMENT CSV
 #+INCLUDE: "../nougat/packages/csv-mode/csv-mode.org"
 ** LaTeX
