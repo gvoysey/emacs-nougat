@@ -142,7 +142,6 @@ Configuration related core editor functions are here.
 #+INCLUDE: "../nougat/emacs/popwin.org" :minlevel 2
 #+INCLUDE: "../nougat/emacs/ws-butler.org" :minlevel 2
 #+INCLUDE: "../nougat/emacs/avy.org" :minlevel 2
-
 ** multiple-cursors
 [[https://github.com/magnars/multiple-cursors.el][Multiple Cursors]] is an emacs package to provide Sublime Text-like multiple selections.
 
@@ -174,8 +173,7 @@ Configuration related core editor functions are here.
                 ("#" . mc/insert-numbers) ; use num prefix to set the starting number
                 ("^" . mc/edit-beginnings-of-lines)
                 ("$" . mc/edit-ends-of-lines))
-  :bind (("M-3" . mc/mark-next-like-this
-  )))
+  )
 #+end_src
 
 ** general
@@ -227,12 +225,16 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
 #+end_src
 ** restclient
 #+begin_src emacs-lisp
-  (use-package restclient
-   :straight (restclient :type git :host github :repo "pashky/restclient.el")
-   )
-(use-package ob-restclient
- :straight (ob-restclient :type git :host github :repo "alf/ob-restclient.el")
- )
+        (use-package restclient
+         :straight (restclient :type git :host github :repo "pashky/restclient.el")
+         )
+      (use-package ob-restclient
+       :straight (ob-restclient :type git :host github :repo "alf/ob-restclient.el")
+       )
+    (use-package company-restclient
+     :init
+  (add-to-list 'company-backends 'company-restclient
+               ))
 #+end_src
 ** zoom-window
 #+begin_src emacs-lisp
