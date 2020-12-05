@@ -85,3 +85,235 @@ normal bindings.
  :config
  )
 #+end_src
+
+* COMMENT buffer-move
+:PROPERTIES:
+:ARCHIVE_TIME: 2020-12-04 Fri 21:30
+:ARCHIVE_FILE: ~/.emacs.d/emacs-nougat/user-outlines/gvoysey.org
+:ARCHIVE_OLPATH: emacs
+:ARCHIVE_CATEGORY: gvoysey
+:END:
+#+CAPTION: Move buffers around more easily
+#+begin_src emacs-lisp
+  (use-package buffer-move
+  :straight(buffer-move
+  :type git
+  :host github
+  :repo "lukhas/buffer-move"))
+
+  ;; ((global-set-key (kbd "<C-S-up>")     'buf-move-up)
+  ;; (global-set-key (kbd "<C-S-down>")   'buf-move-down)
+  ;; (global-set-key (kbd "<C-S-left>")   'buf-move-left)
+  ;; (global-set-key (kbd "<C-S-right>")  'buf-move-right)
+  ;; ;;(setq buffer-move-stay-after-swap t)
+  ;; ;;(setq buffer-move-behavior 'move)
+  ;; )
+#+end_src
+
+* COMMENT sr-speedbar
+:PROPERTIES:
+:ARCHIVE_TIME: 2020-12-04 Fri 21:30
+:ARCHIVE_FILE: ~/.emacs.d/emacs-nougat/user-outlines/gvoysey.org
+:ARCHIVE_OLPATH: emacs
+:ARCHIVE_CATEGORY: gvoysey
+:END:
+#+include: "../nougat/emacs/srspeedbar.org"
+
+#+begin_src emacs-lisp
+(setq speedbar-initial-expansion-list-name "quick buffers")
+(global-set-key (kbd "M-1") 'sr-speedbar-toggle)
+#+end_src
+
+* COMMENT dashboard
+:PROPERTIES:
+:ARCHIVE_TIME: 2020-12-04 Fri 21:30
+:ARCHIVE_FILE: ~/.emacs.d/emacs-nougat/user-outlines/gvoysey.org
+:ARCHIVE_OLPATH: emacs
+:ARCHIVE_CATEGORY: gvoysey
+:END:
+[[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]] is a pretty cute splash screen mode for emacs that's a nice way to jump
+between projects.
+#+begin_src emacs-lisp
+  (use-package dashboard
+    :straight (dashboard :type git
+                         :host github
+                         :repo "emacs-dashboard/emacs-dashboard")
+    :config
+    (when (display-graphic-p) (dashboard-setup-startup-hook)))
+
+    (when (display-graphic-p)
+      (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+      (setq dashboard-center-content t)
+      (setq dashboard-items '((recents  . 5)
+                              (bookmarks . 5)
+                              (projects . 5)
+                              (agenda . 5)
+                              ;;                        (registers . 5)
+                              ))
+      (setq dashboard-set-heading-icons t)
+      (setq dashboard-set-file-icons t)
+      (setq dashboard-set-navigator t)
+      (setq dashboard-set-footer nil))
+#+end_src
+
+* COMMENT awesome-tabs
+:PROPERTIES:
+:ARCHIVE_TIME: 2020-12-04 Fri 21:30
+:ARCHIVE_FILE: ~/.emacs.d/emacs-nougat/user-outlines/gvoysey.org
+:ARCHIVE_OLPATH: emacs
+:ARCHIVE_CATEGORY: gvoysey
+:END:
+Emacs can have tabs! [[https://github.com/manateelazycat/awesome-tab][awesome tab]] provides them.
+#+begin_src emacs-lisp
+(use-package awesome-tab
+  :straight (awesome-tab :type git
+                         :host github
+                         :repo "manateelazycat/awesome-tab")
+  :config
+  (when (display-graphic-p) (awesome-tab-mode t))
+)
+#+end_src
+
+* COMMENT shift-tab
+:PROPERTIES:
+:ARCHIVE_TIME: 2020-12-04 Fri 21:30
+:ARCHIVE_FILE: ~/.emacs.d/emacs-nougat/user-outlines/gvoysey.org
+:ARCHIVE_OLPATH: emacs
+:ARCHIVE_CATEGORY: gvoysey
+:END:
+Sometimes it's handy to go back exactly a tab width.
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "<S-tab>") 'un-indent-by-tab-width)
+(defun un-indent-by-tab-width ()
+  "remove 4 spaces from beginning of of line"
+  (interactive)
+  (save-excursion
+    (save-match-data
+      (beginning-of-line)
+      ;; get rid of tabs at beginning of line
+      (when (looking-at "^\\s-+")
+        (untabify (match-beginning 0) (match-end 0)))
+      (when (concat "^" (make-string tab-width ?\ ))
+        (replace-match "")))))
+
+#+end_src
+
+* COMMENT prism
+:PROPERTIES:
+:ARCHIVE_TIME: 2020-12-04 Fri 21:30
+:ARCHIVE_FILE: ~/.emacs.d/emacs-nougat/user-outlines/gvoysey.org
+:ARCHIVE_OLPATH: emacs
+:ARCHIVE_CATEGORY: gvoysey
+:END:
+#+begin_src emacs-lisp
+  (use-package prism
+    :straight (prism :type git :host github :repo "alphapapa/prism.el")
+
+    :hook ((emacs-lisp-mode) . prism-mode )
+    :config
+    (prism-set-colors
+      :num 24
+      :colors (list "#ffb4ac" "#e5786d" "#834c98" "#a4b5e6" "#7ec98f" "#8ac6f2")
+    ;;   ;; :desaturations (cl-loop for i from 0 below 24
+    ;;   ;;                        collect (* i 2.5))
+    ;;   ;; :lightens (cl-loop for i from 0 below 24
+    ;;   ;;                   collect (* i 2.5))
+    ;;   )
+   )
+#+end_src
+
+* COMMENT centered-cursor
+:PROPERTIES:
+:ARCHIVE_TIME: 2020-12-04 Fri 21:30
+:ARCHIVE_FILE: ~/.emacs.d/emacs-nougat/user-outlines/gvoysey.org
+:ARCHIVE_OLPATH: emacs
+:ARCHIVE_CATEGORY: gvoysey
+:END:
+From [[https://two-wrongs.com/centered-cursor-mode-in-vanilla-emacs][centered-cursor in vanilla emacs]], ape centered cursor mode with some speedups
+#+begin_src emacs-lisp
+(setq scroll-preserve-screen-position t
+      scroll-conservatively 0
+      maximum-scroll-margin 0.5
+      scroll-margin 99999)
+#+end_src
+
+* COMMENT perspective
+:PROPERTIES:
+:ARCHIVE_TIME: 2020-12-04 Fri 21:30
+:ARCHIVE_FILE: ~/.emacs.d/emacs-nougat/user-outlines/gvoysey.org
+:ARCHIVE_OLPATH: emacs
+:ARCHIVE_CATEGORY: gvoysey
+:END:
+#+begin_src emacs-lisp
+(use-package perspective
+  :config
+  (persp-mode))
+#+end_src
+
+* COMMENT eyebrowse
+:PROPERTIES:
+:ARCHIVE_TIME: 2020-12-04 Fri 21:30
+:ARCHIVE_FILE: ~/.emacs.d/emacs-nougat/user-outlines/gvoysey.org
+:ARCHIVE_OLPATH: emacs
+:ARCHIVE_CATEGORY: gvoysey
+:END:
+[[https://depp.brause.cc/eyebrowse/][eyebrowse]]
+#+begin_src emacs-lisp
+(use-package eyebrowse
+ :init (setq eyebrowse-keymap-prefix (kbd"C-x e"))
+ :config
+ (eyebrowse-mode t)
+ (setq eyebrowse-wrap-around t)
+ (setq eyebrowse-switch-back-and-forth t)
+     )
+#+end_src
+
+* COMMENT polymode
+:PROPERTIES:
+:ARCHIVE_TIME: 2020-12-04 Fri 21:30
+:ARCHIVE_FILE: ~/.emacs.d/emacs-nougat/user-outlines/gvoysey.org
+:ARCHIVE_OLPATH: emacs
+:ARCHIVE_CATEGORY: gvoysey
+:END:
+
+#+begin_src emacs-lisp
+  (use-package poly-org
+  :ensure t
+       )
+#+end_src
+
+* COMMENT org-jira
+:PROPERTIES:
+:ARCHIVE_TIME: 2020-12-04 Fri 21:30
+:ARCHIVE_FILE: ~/.emacs.d/emacs-nougat/user-outlines/gvoysey.org
+:ARCHIVE_OLPATH: org-mode customizations
+:ARCHIVE_CATEGORY: gvoysey
+:END:
+
+#+begin_src emacs-lisp
+(use-package org-jira
+ :straight (org-jira :type git
+               :host github
+               :repo "ahungry/org-jira")
+ :config (setq jiralib-url "https://neurala.atlassian.net")
+     )
+#+end_src
+
+* COMMENT jedi
+:PROPERTIES:
+:ARCHIVE_TIME: 2020-12-04 Fri 21:31
+:ARCHIVE_FILE: ~/.emacs.d/emacs-nougat/user-outlines/gvoysey.org
+:ARCHIVE_OLPATH: language support/python
+:ARCHIVE_CATEGORY: gvoysey
+:END:
+#+INCLUDE: "../nougat/support/python/jedi.org"
+
+* COMMENT elpy
+:PROPERTIES:
+:ARCHIVE_TIME: 2020-12-04 Fri 21:31
+:ARCHIVE_FILE: ~/.emacs.d/emacs-nougat/user-outlines/gvoysey.org
+:ARCHIVE_OLPATH: language support/python
+:ARCHIVE_CATEGORY: gvoysey
+:END:
+#+INCLUDE: "../nougat/support/python/elpy.org"
