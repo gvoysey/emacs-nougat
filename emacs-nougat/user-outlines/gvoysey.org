@@ -879,15 +879,14 @@ Saves to a temp file and puts the filename in the kill ring."
 #+end_src
 
 ** vterm
-
 #+begin_src emacs-lisp
-   (use-package vterm
-        :straight (vterm :type git
-                      :host github
-                      :repo "akermu/emacs-libvterm")
-        :bind ("C-c v" . vterm-other-window)
-    ;;    :hook ((vterm-mode . (lambda () (interactive) (display-line-numbers-mode "toggle"))))
-            )
+  (use-package vterm
+       :straight (vterm :type git
+                     :host github
+                     :repo "akermu/emacs-libvterm")
+       :bind ("C-c v" . vterm-other-window)
+       :init (setq vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=no")
+       )
 #+end_src
 
 ** burly
