@@ -1,62 +1,62 @@
 ** hydra-projectile
 #+begin_src emacs-lisp
-    (defun projectile-run-vterm-other-window (&optional arg)
-      "Invoke `vterm' in the project's root.
+  (defun projectile-run-vterm-other-window (&optional arg)
+    "Invoke `vterm' in the project's root.
        Switch to the project specific term buffer if it already exists.
        Use a prefix argument ARG to indicate creation of a new process instead."
-      (interactive "P")
-      (let* ((project (projectile-ensure-project (projectile-project-root)))
-             (buffer (projectile-generate-process-name "vterm" arg)))
-        (unless (buffer-live-p (get-buffer buffer))
-          (unless (require 'vterm nil 'noerror)
-            (error "Package 'vterm' is not available"))
-          (projectile-with-default-dir project
-            (vterm-other-window)))
-        (switch-to-buffer buffer)))
+    (interactive "P")
+    (let* ((project (projectile-ensure-project (projectile-project-root)))
+           (buffer (projectile-generate-process-name "vterm" arg)))
+      (unless (buffer-live-p (get-buffer buffer))
+        (unless (require 'vterm nil 'noerror)
+          (error "Package 'vterm' is not available"))
+        (projectile-with-default-dir project
+          (vterm-other-window)))
+      (switch-to-buffer buffer)))
 
-    (defun dired-open-other-window nil
-      "Open dired in another window to the right of the current one, but do not bring focus there."
-      (interactive) (save-excursion (with-selected-window (split-window-right)(balance-windows) (dired  default-directory))))
+  (defun dired-open-other-window nil
+    "Open dired in another window to the right of the current one, but do not bring focus there."
+    (interactive) (save-excursion (with-selected-window (split-window-right)(balance-windows) (dired  default-directory))))
 
   (defun gv/counsel-fzf-with-prefix-arg () "Prompt for root fzf directory"
          (interactive)
          (setq current-prefix-arg '(4))
          (call-interactively 'counsel-fzf))
 
-    (pretty-hydra-define hydra-projectile (:title "Quick Navigation" :color teal :quit-key "<XF86Launch8>")
-      ("Open"
-       (("f"   counsel-projectile-find-file-dwim "Find project file")
-        ("z"   counsel-projectile-switch-to-buffer "Switch to project buffer")
-        ("w"   counsel-projectile-switch-project "Switch project")
-        ("V"   vterm-other-window "vterm indirect")
-        ("v"   vterm "vterm")
-        ("D"   dired-open-other-window "dired indirect")
-        ("d"   dired "dired"))
+  (pretty-hydra-define hydra-projectile (:title "Quick Navigation" :color teal :quit-key "<XF86Launch8>")
+    ("Open"
+     (("f"   counsel-projectile-find-file-dwim "Find project file")
+      ("z"   counsel-projectile-switch-to-buffer "Switch to project buffer")
+      ("w"   counsel-projectile-switch-project "Switch project")
+      ("V"   vterm-other-window "vterm indirect")
+      ("v"   vterm "vterm")
+      ("D"   dired-open-other-window "dired indirect")
+      ("d"   dired "dired"))
 
-      "Search"
-      (("a"   counsel-projectile-rg "rg in project")
-       ("A"   counsel-rg "rg")
-       ("o"   projectile-multi-occur "Occur in project")
-       ("g"   counsel-projectile-git-grep "git grep")
-       ("r"   counsel-fzf "fzf here")
-       ("R"   gv/counsel-fzf-with-prefix-arg "fzf anywhere")
-       ("h"   org-recent-headings)
-       )
+     "Search"
+     (("a"   counsel-projectile-rg "rg in project")
+      ("A"   counsel-rg "rg")
+      ("o"   projectile-multi-occur "Occur in project")
+      ("g"   counsel-projectile-git-grep "git grep")
+      ("r"   counsel-fzf "fzf here")
+      ("R"   gv/counsel-fzf-with-prefix-arg "fzf anywhere")
+      ("h"   org-recent-headings)
+      )
 
-      "Buffers"
-      (("k"   projectile-kill-buffers "Kill project")
-       ("l" magit-log-buffer-file "git file log")
-       ("I" (ibuffer t nil nil t) "ibuffer indirect")
-       ("i" (ibuffer t nil nil nil) "ibuffer")
-       )
+     "Buffers"
+     (("k"   projectile-kill-buffers "Kill project")
+      ("l" magit-log-buffer-file "git file log")
+      ("I" (ibuffer t nil nil t) "ibuffer indirect")
+      ("i" (ibuffer t nil nil nil) "ibuffer")
+      )
 
-      "Projectile"
-      (("C"   projectile-invalidate-cache "Rebuild cache")
-       ("x"   projectile-remove-known-project "Remove projects")
-       ("X"   projectile-cleanup-known-projects "Cleanup"))
+     "Projectile"
+     (("C"   projectile-invalidate-cache "Rebuild cache")
+      ("x"   projectile-remove-known-project "Remove projects")
+      ("X"   projectile-cleanup-known-projects "Cleanup"))
 
-  )
+     )
     )
 
-    (global-set-key (kbd "<XF86Launch8>") 'hydra-projectile/body)
+  (global-set-key (kbd "<XF86Launch8>") 'hydra-projectile/body)
 #+end_src

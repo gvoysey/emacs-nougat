@@ -151,10 +151,10 @@ Configuration related core editor functions are here.
 #+end_src
 #+begin_src emacs-lisp
   (use-package expand-region
-   :straight (expand-region :type git :host github :repo "magnars/expand-region.el")
-   :bind (("M-2" . er/expand-region))
- :config (pending-delete-mode 1
-   ))
+    :straight (expand-region :type git :host github :repo "magnars/expand-region.el")
+    :bind (("M-2" . er/expand-region))
+    :config (pending-delete-mode 1
+                                 ))
 
 #+end_src
 #+begin_src emacs-lisp
@@ -173,34 +173,55 @@ Configuration related core editor functions are here.
                 ("#" . mc/insert-numbers) ; use num prefix to set the starting number
                 ("^" . mc/edit-beginnings-of-lines)
                 ("$" . mc/edit-ends-of-lines))
-  )
+    )
+#+end_src
+
+** bm
+#+begin_src emacs-lisp
+  (use-package bm
+    :bind (("<C-f2>" . bm-toggle)
+           ("<f2>" . bm-next)
+           ("<S-f2>" . bm-previous)))
+(global-set-key (kbd "<left-fringe> <mouse-5>") 'bm-next-mouse)
+(global-set-key (kbd "<left-fringe> <mouse-4>") 'bm-previous-mouse)
+(global-set-key (kbd "<left-fringe> <mouse-1>") 'bm-toggle-mouse)
+#+end_src
+
+** COMMENT poly-org
+#+begin_src emacs-lisp
+  ;; (use-package poly-org
+  ;;   :hook ((org-mode). poly-org-mode))
+#+end_src
+** deadgrep
+#+begin_src emacs-lisp
+(use-package deadgrep)
 #+end_src
 
 ** general
 #+begin_src emacs-lisp
-    (use-package general
-      :straight (general :type git :host github :repo "noctuid/general.el"))
+  (use-package general
+    :straight (general :type git :host github :repo "noctuid/general.el"))
 #+end_src
 
 #+RESULTS:
 
 ** make directories on the fly
 #+begin_src emacs-lisp
-(defadvice find-file (before make-directory-maybe (filename &optional wildcards) activate)
-  "Create parent directory if not exists while visiting file."
-  (unless (file-exists-p filename)
-    (let ((dir (file-name-directory filename)))
-      (unless (file-exists-p dir)
-        (make-directory dir t))))) ;; todo change this to prompt?
+  (defadvice find-file (before make-directory-maybe (filename &optional wildcards) activate)
+    "Create parent directory if not exists while visiting file."
+    (unless (file-exists-p filename)
+      (let ((dir (file-name-directory filename)))
+        (unless (file-exists-p dir)
+          (make-directory dir t))))) ;; todo change this to prompt?
 #+end_src
 
 ** unicode-fonts
 #+begin_src emacs-lisp
   (use-package unicode-fonts
-     :ensure t
-     :config
-      (unicode-fonts-setup)
-      (set-fontset-font t 'symbol "Noto Color Emoji"))
+    :ensure t
+    :config
+    (unicode-fonts-setup)
+    (set-fontset-font t 'symbol "Noto Color Emoji"))
 #+end_src
 ** exec-path from shell
 [[https://github.com/purcell/exec-path-from-shell][This]] is a GNU Emacs library to ensure environment variables inside Emacs look the
@@ -1053,6 +1074,13 @@ LSP is the language server protocol
 #+INCLUDE: "../nougat/support/latex/latex.org"
 ** lisp
 #+INCLUDE: "../nougat/support/lisp/lispy-mode.org"
+*** aggressive-indent mode
+#+begin_src emacs-lisp
+  (use-package aggressive-indent
+    :hook ((emacs-lisp-mode) . aggressive-indent-mode)
+    )
+#+end_src
+
 *** racket
 #+begin_src emacs-lisp
   (use-package racket-mode
@@ -1150,55 +1178,54 @@ LSP is the language server protocol
 From [[https://github.com/dsedivec/dot-emacs-d/blob/master/lisp/window-hydra.el][here]]
 #+begin_src emacs-lisp
   (use-package windmove)
-     (use-package transpose-frame)
-         (use-package ace-window
-           :bind* (("C-<tab>" . ace-window)))
+  (use-package transpose-frame)
+  (use-package ace-window
+    :bind* (("C-<tab>" . ace-window)))
 
-         (require 'windmove)
-         (require 'ace-window)
-       (pretty-hydra-define window-hydra (:title "Navigation" :color teal :quit-key "<XF86Launch9>")
-         ("Move window"
-          (    ("I" windmove-swap-states-up "up" )
-               ("J" windmove-swap-states-left "left" )
-               ("L" windmove-swap-states-down "down" )
-               ("K" windmove-swap-states-right "right" )
-         )
-          "Move focus"
-          (    ("i" windmove-up "up" )
-               ("j" windmove-left "left" )
-               ("k" windmove-down "down" )
-               ("l" windmove-right "right" )
-               )
-          "Modify"
-          (
-           ("c" clone-indirect-buffer-other-window "clone indirect")
-           ("C" clone-indirect-buffer "clone")
-         ("0" delete-window "delete this window")
-         ("1" delete-other-windows "delete other windows")
-         ("2" split-window-below "split below")
-         ("3" split-window-right "split right")
-         ("w" ace-swap-window "swap window")
-         ("j" zoom-window-zoom "zoom")
-         )
-      "winner-mode"
-      (
-       ("<right>" winner-redo "redo")
-       ("<left>" winner-undo "undo")
-       )
-    "transpose-mode"
-  (
-   ("t" transpose-frame "transpose x/y")
-   ("v" flip-frame "flip vertically")
-   ("h" flop-frame "flip horizontally")
-   ("8" rotate-frame "rotate 180")
-   ("r" rotate-frame-clockwise "rotate clockwise")
-   ("R" rotate-frame-anticlockwise "rotate anticlockwise")
-   )
-    "Visual styling"
-    (("t" display-fill-column-indicator-mode "column marker")
-     ("s" +sidebar-toggle "toggle sidebars"))
-
-    ))
+  (require 'windmove)
+  (require 'ace-window)
+  (pretty-hydra-define window-hydra (:title "Navigation" :color teal :quit-key "<XF86Launch9>")
+    ("Move window"
+     (    ("I" windmove-swap-states-up "up" )
+          ("J" windmove-swap-states-left "left" )
+          ("L" windmove-swap-states-down "down" )
+          ("K" windmove-swap-states-right "right" )
+          )
+     "Move focus"
+     (    ("i" windmove-up "up" )
+          ("j" windmove-left "left" )
+          ("k" windmove-down "down" )
+          ("l" windmove-right "right" )
+          )
+     "Modify"
+     (
+      ("c" clone-indirect-buffer-other-window "clone indirect")
+      ("C" clone-indirect-buffer "clone")
+      ("0" delete-window "delete this window")
+      ("1" delete-other-windows "delete other windows")
+      ("2" split-window-below "split below")
+      ("3" split-window-right "split right")
+      ("w" ace-swap-window "swap window")
+      ("j" zoom-window-zoom "zoom")
+      )
+     "winner-mode"
+     (
+      ("<right>" winner-redo "redo")
+      ("<left>" winner-undo "undo")
+      )
+     "transpose-mode"
+     (
+      ("t" transpose-frame "transpose x/y")
+      ("v" flip-frame "flip vertically")
+      ("h" flop-frame "flip horizontally")
+      ("8" rotate-frame "rotate 180")
+      ("r" rotate-frame-clockwise "rotate clockwise")
+      ("R" rotate-frame-anticlockwise "rotate anticlockwise")
+      )
+     "Visual styling"
+     (("t" display-fill-column-indicator-mode "column marker")
+      ("s" +sidebar-toggle "toggle sidebars"))
+     ))
   (global-set-key (kbd "<XF86Launch9>") 'window-hydra/body)
 #+end_src
 
