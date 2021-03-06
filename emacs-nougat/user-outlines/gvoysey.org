@@ -223,6 +223,30 @@ Configuration related core editor functions are here.
     (unicode-fonts-setup)
     (set-fontset-font t 'symbol "Noto Color Emoji"))
 #+end_src
+hack up font injection, cf [[https://blog.mudit.xyz/posts/angels-and-daemons-a-tale-of-emojis-in-emacs][blog]].
+#+begin_src emacs-lisp
+;; Add Apple Color Emoji to the default symbol fontset used by Emacs
+(defun zdx/set-emoji-font ()
+  (set-fontset-font "fontset-default" 'symbol "Noto Color Emoji" nil 'prepend))
+
+;; Call the config function once and then remove the handler
+(defun zdx/set-emoji-font-in-frame (frame)
+  (with-selected-frame frame
+    (zdx/set-emoji-font))
+  ;; Unregister this hook once its run
+  (remove-hook 'after-make-frame-functions
+               'zdx/set-emoji-font-in-frame))
+
+;; Attach the function to the hook only if in Emacs server
+;; otherwise just call the config function directly
+(if (daemonp)
+    (add-hook 'after-make-frame-functions
+              'zdx/set-emoji-font-in-frame)
+  (zdx/set-emoji-font))
+
+
+#+end_src
+
 ** exec-path from shell
 [[https://github.com/purcell/exec-path-from-shell][This]] is a GNU Emacs library to ensure environment variables inside Emacs look the
 same as in the user's shell.  This is useful when, like me, you don't really make an
