@@ -187,6 +187,16 @@ Configuration related core editor functions are here.
 (global-set-key (kbd "<left-fringe> <mouse-1>") 'bm-toggle-mouse)
 #+end_src
 
+** latex-input
+#+begin_src emacs-lisp
+(use-package latex
+ :straight (latex :type git :host github :repo "clarkgrubb/latex-input" :files ("latex.el"))
+ )
+#+end_src
+
+#+RESULTS:
+: t
+
 ** COMMENT poly-org
 #+begin_src emacs-lisp
   ;; (use-package poly-org
@@ -824,8 +834,8 @@ Add fancy modeline, because why not.
                     (extension "py" "pyx" "pyc" "whl" "ipynb"))
                    ("Documents"
                     (extension "md" "rst" "txt" "docx" "pptx" "xlsx"))
-                   ("Text Data"
-                    (extension "yaml" "toml" "cfg" "json"))
+                   ("Data"
+                    (extension "yaml" "toml" "cfg" "json" "xml" "ini"))
                    ("Packages"
                     (extension "deb" "rpm" "dmg" "iso"))
                    ("Org"
@@ -833,7 +843,7 @@ Add fancy modeline, because why not.
                    ("Archives"
                     (extension "zip" "rar" "gz" "bz2" "tar" "tgz"))
                    ("Videos"
-                    (extension "mp4" "webm" "mkv" "mov" "avi"))
+                    (extension "mp4" "webm" "mkv" "mov" "avi" "m3u8"))
                    ("Audio"
                     (extension "m4a" "aac" "wav" "mp3" "ogg"))
                    ("Images"
@@ -878,15 +888,26 @@ Add fancy modeline, because why not.
   (use-package dired-collapse
     :hook 'dired-mode-hook)
   ;;preview files in dired
-  (use-package peep-dired
-  :after dired
-    :bind (:map dired-mode-map
-                ("P" . peep-dired))
-    :config (setq peep-dired-ignored-extensions '("mkv" "iso" "mp4"))
-    (setq peep-dired-cleanup-on-disable t)
-    (setq peep-dired-cleanup-eagerly t)
-    (setq peep-dired-enable-on-directories t)
-    )
+  ;; (use-package peep-dired
+  ;; :after dired
+  ;;   :bind (:map dired-mode-map
+  ;;               ("P" . peep-dired))
+  ;;   :config (setq peep-dired-ignored-extensions '("mkv" "iso" "mp4"))
+  ;;   (setq peep-dired-cleanup-on-disable t)
+  ;;   (setq peep-dired-cleanup-eagerly t)
+  ;;   (setq peep-dired-enable-on-directories t)
+  ;;   )
+#+end_src
+
+#+RESULTS:
+| dired-collapse |
+
+** diranged
+#+begin_src emacs-lisp
+(use-package diranged
+ :straight (diranged :type git :host github :repo "tslight/diranged")
+:bind (:map dired-mode-map ("P" . diranged-mode))
+ )
 #+end_src
 
 ** screenshot
