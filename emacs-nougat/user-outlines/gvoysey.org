@@ -93,7 +93,7 @@ The lab notebook in question has a central org-mode document where most of the w
 
 * themes
 Emacs has many themes that it can use.  One set of them are configured here.
-** solarized-theme
+** COMMENT solarized-theme
 Solarized is a nice theme.  Easy on the eyes.  The problem with themes is that I like
 to use emacsclient as ~exec emacsclient -c -a="" "$@" & > /dev/null~, but if you do
 this, the theme comes out all weird the first time because emacs doesn't know if it
@@ -116,11 +116,14 @@ it works fine. [[https://old.reddit.com/r/emacs/comments/3a5kim/emacsclient_does
 ** material-theme
 
 #+begin_src emacs-lisp
-     (use-package material-theme
-      :straight (emacs-material-theme :type git
-                    :host github
-                    :repo "cpaulik/emacs-material-theme")
-          )
+  (use-package material-theme
+   :straight (emacs-material-theme :type git
+                 :host github
+                 :repo "cpaulik/emacs-material-theme")
+    :config
+   (load-theme 'material t)
+   :defer 1
+       )
 #+end_src
 
 * emacs
