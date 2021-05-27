@@ -175,6 +175,21 @@ Configuration related core editor functions are here.
                 ("$" . mc/edit-ends-of-lines))
     )
 #+end_src
+** rg.el
+#+begin_src emacs-lisp
+   (use-package rg
+    :straight (rg :type git :host github :repo "dajva/rg.el")
+    :config
+    (rg-enable-menu)
+    )
+#+end_src
+** fzf
+#+begin_src emacs-lisp
+(use-package fzf
+ :straight (fzf :type git :host github :repo "bling/fzf.el")
+ :config
+ )
+#+end_src
 
 ** bm
 #+begin_src emacs-lisp
@@ -187,15 +202,22 @@ Configuration related core editor functions are here.
 (global-set-key (kbd "<left-fringe> <mouse-1>") 'bm-toggle-mouse)
 #+end_src
 
-** latex-input
+** COMMENT latex-input
 #+begin_src emacs-lisp
 (use-package latex
  :straight (latex :type git :host github :repo "clarkgrubb/latex-input" :files ("latex.el"))
  )
 #+end_src
 
-#+RESULTS:
-: t
+** olivetti
+#+begin_src emacs-lisp
+  (use-package olivetti
+   :straight (olivetti :type git :host github :repo "rnkn/olivetti")
+   :config
+ (setq olivetti-body-width 0.75
+   ))
+#+end_src
+
 
 ** COMMENT poly-org
 #+begin_src emacs-lisp
@@ -454,53 +476,57 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
 ** ibuffer
 #+CAPTION: Configure ibuffer
 #+begin_src emacs-lisp
-  (use-package ibuffer-projectile)
+      (use-package ibuffer-projectile)
 
-      (global-set-key (kbd "C-x C-b") 'ibuffer)
-      (setq ibuffer-saved-filter-groups
-            (quote (("default"
-                     ("dired" (mode . dired-mode))
-                     ("org" (name . "^.*org$"))
-                     ("shell" (or
-                               (mode . eshell-mode)
-                               (mode . shell-mode)
-                               (mode . vterm-mode)))
-                     ("git"    (or (name . "^\*magit")
-                                   (name . "^\magit")))
-                     ("programming" (or
-                                     (mode . python-mode)
-                                     (mode . c++-mode)
-                                     (mode . makefile-gmake-mode)
-                                     (mode . latex-mode)
+          (global-set-key (kbd "C-x C-b") 'ibuffer)
+          (setq ibuffer-saved-filter-groups
+                (quote (("default"
+                         ("dired" (mode . dired-mode))
+                         ("org" (or (name . "^.*org$")
+                                    (name . "^\*Org")))
+                         ("shell" (or
+                                   (mode . eshell-mode)
+                                   (mode . shell-mode)
+                                   (mode . vterm-mode)))
+                         ("git"    (or (name . "^\*magit")
+                                       (name . "^\magit")))
+                         ("programming" (or
+                                         (mode . python-mode)
+                                         (mode . c++-mode)
+                                         (mode . makefile-gmake-mode)
+                                         (mode . latex-mode)
 
-                                     (mode . gnu-makefile-mode)))
-                     ("data / configs " (or       (mode . json-mode)
-                                                  (mode . yaml-mode)))
-                     ("emacs" (or
-                               (name . "^\\*scratch\\*$")
-                               (name . "^\\*Messages\\*$")
-                               (name . "^\\*straight-process\\*$")
-                               (name . "^\\*Calendar\\*$")
-                               (name . "^\\*lsp*\\*$")
-                               (name . "^\\*pyls*\\*$")
-                               )
-                      )
-                     ))))
-      (add-hook 'ibuffer-mode-hook
-      (lambda ()
-      (ibuffer-auto-mode 1)
-      (ibuffer-switch-to-saved-filter-groups "default")))
+                                         (mode . gnu-makefile-mode)))
+                         ("data / configs " (or       (mode . json-mode)
+                                                      (mode . yaml-mode)))
+                         ("Pinboard" (or
+                                      (name . "^\*Pinboard")))
+                         ("emacs" (or
+                                   (name . "^\\*scratch\\*$")
+                                   (name . "^\\*Messages\\*$")
+                                   (name . "^\\*straight-process\\*$")
+                                   (name . "^\\*Calendar\\*$")
+                                   (name . "^\\*lsp*\\*$")
+                                   (name . "^\\*pyls*\\*$")
+                                   )
+                          )
+                         ))))
+          (add-hook 'ibuffer-mode-hook
+          (lambda ()
+          (ibuffer-auto-mode 1)
+          (ibuffer-switch-to-saved-filter-groups "default")))
 
-      (require 'ibuf-ext)
-      ;; (add-to-list 'ibuffer-never-show-predicates "^\\*")
-      ;; don't show these
-      ;(add-to-list 'ibuffer-never-show-predicates "zowie")
-      ;; Don't show filter groups if there are no buffers in that group
-      (setq ibuffer-show-empty-filter-groups nil)
+          (require 'ibuf-ext)
+          ;; (add-to-list 'ibuffer-never-show-predicates "^\\*")
+          ;; don't show these
+          ;(add-to-list 'ibuffer-never-show-predicates "zowie")
+          ;; Don't show filter groups if there are no buffers in that group
+          (setq ibuffer-show-empty-filter-groups nil)
 
-      ;; Don't ask for confirmation to delete marked buffers
-      (setq ibuffer-expert t)
+          ;; Don't ask for confirmation to delete marked buffers
+          (setq ibuffer-expert t)
 #+end_src
+
 
 #+CAPTION: display human-readable sizes for buffers
 #+begin_src emacs-lisp
