@@ -24,7 +24,7 @@ case, before the package manager is initialized.
 Accidentally closing your editor window when you don't mean to just sucks.  In Linux,
 we can handle this at the desktop environment/window manager level; on macOS, it's
 easier to just disable the key inside of emacs itself.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (when (eq system-type 'darwin)
     (global-unset-key (kbd "s-q")))
 #+end_src
@@ -33,7 +33,7 @@ easier to just disable the key inside of emacs itself.
 *** Disable doc-view-mode defaults for pdf files
 I prefer side-by-side pdf viewers over the in-emacs option for rendering PDFs.  This
 forces it.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (defun ensc/mailcap-mime-data-filter (filter)
   ""
   (mapcar (lambda(major)
@@ -63,30 +63,30 @@ Set up some variables pointing to where normal lab notebook things live.
 ** my/org-path-name
 Part of this configuration's purpose is to use emacs as a digital lab notebook, which
 is a git repo.  This is its canonical location.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (defvar my/org-path-name (expand-file-name "~/lab-notebook/"))
 #+end_src
 
 ** my/org-file-name
 Set up a convenience function for path manipulation inside the lab notebook.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (defun my/make-org-file-name (file-name)
     (concat my/org-path-name file-name))
 #+end_src
 
 ** my/notes-file-name
 The lab notebook in question has a central org-mode document where most of the work happens.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (defvar my/notes-file-name (my/make-org-file-name "notes.org"))
 #+end_src
 
 ** my/template-directory
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (defvar my/template-directory (concat my/org-path-name "templates"))
 #+end_src
 
 ** my/make-template-file-name
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (defun my/make-template-file-name (file-name)
     (concat my/template-directory file-name))
 #+end_src
@@ -102,7 +102,7 @@ have available to it.
 
 The solution is to delay theme load for a few seconds until the GUI comes up and then
 it works fine. [[https://old.reddit.com/r/emacs/comments/3a5kim/emacsclient_does_not_respect_themefont_setting/cs9roe4/][this]] reddit post lead to [[https://github.com/kaushalmodi/.emacs.d/blob/f3c44e933f45dfdb760540e9f86acc91b55ab94a/init.el#L293-L304][this]] solution.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package solarized-theme
 
    :straight (solarized-theme :type git
@@ -115,7 +115,7 @@ it works fine. [[https://old.reddit.com/r/emacs/comments/3a5kim/emacsclient_does
 #+end_src
 ** material-theme
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package material-theme
    :straight (emacs-material-theme :type git
                  :host github
@@ -148,11 +148,11 @@ Configuration related core editor functions are here.
 ** multiple-cursors
 [[https://github.com/magnars/multiple-cursors.el][Multiple Cursors]] is an emacs package to provide Sublime Text-like multiple selections.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package region-bindings-mode
     :config (region-bindings-mode-enable))
 #+end_src
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package expand-region
     :straight (expand-region :type git :host github :repo "magnars/expand-region.el")
     :bind (("M-2" . er/expand-region))
@@ -160,7 +160,7 @@ Configuration related core editor functions are here.
                                  ))
 
 #+end_src
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package multiple-cursors
     :bind (:map region-bindings-mode-map
                 ("a" . mc/mark-all-like-this)
@@ -179,7 +179,7 @@ Configuration related core editor functions are here.
     )
 #+end_src
 ** rg.el
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
    (use-package rg
     :straight (rg :type git :host github :repo "dajva/rg.el")
     :config
@@ -187,7 +187,7 @@ Configuration related core editor functions are here.
     )
 #+end_src
 ** fzf
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package fzf
  :straight (fzf :type git :host github :repo "bling/fzf.el")
  :config
@@ -195,7 +195,7 @@ Configuration related core editor functions are here.
 #+end_src
 
 ** bm
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package bm
     :bind (("<C-f2>" . bm-toggle)
            ("<f2>" . bm-next)
@@ -206,14 +206,14 @@ Configuration related core editor functions are here.
 #+end_src
 
 ** COMMENT latex-input
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package latex
  :straight (latex :type git :host github :repo "clarkgrubb/latex-input" :files ("latex.el"))
  )
 #+end_src
 
 ** olivetti
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package olivetti
    :straight (olivetti :type git :host github :repo "rnkn/olivetti")
    :config
@@ -223,23 +223,23 @@ Configuration related core editor functions are here.
 
 
 ** COMMENT poly-org
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   ;; (use-package poly-org
   ;;   :hook ((org-mode). poly-org-mode))
 #+end_src
 ** deadgrep
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package deadgrep)
 #+end_src
 ** emojify
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package emojify
     :hook (after-init . global-emojify-mode)
   )
 #+end_src
 
 ** general
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package general
     :straight (general :type git :host github :repo "noctuid/general.el"))
 #+end_src
@@ -247,7 +247,7 @@ Configuration related core editor functions are here.
 #+RESULTS:
 
 ** make directories on the fly
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (defadvice find-file (before make-directory-maybe (filename &optional wildcards) activate)
     "Create parent directory if not exists while visiting file."
     (unless (file-exists-p filename)
@@ -257,7 +257,7 @@ Configuration related core editor functions are here.
 #+end_src
 
 ** unicode-fonts
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package unicode-fonts
     :ensure t
     :config
@@ -265,7 +265,7 @@ Configuration related core editor functions are here.
     (set-fontset-font t 'symbol "Noto Color Emoji"))
 #+end_src
 hack up font injection, cf [[https://blog.mudit.xyz/posts/angels-and-daemons-a-tale-of-emojis-in-emacs][blog]].
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 ;; Add Apple Color Emoji to the default symbol fontset used by Emacs
 (defun zdx/set-emoji-font ()
   (set-fontset-font "fontset-default" 'symbol "Noto Color Emoji" nil 'prepend))
@@ -293,7 +293,7 @@ hack up font injection, cf [[https://blog.mudit.xyz/posts/angels-and-daemons-a-t
 same as in the user's shell.  This is useful when, like me, you don't really make an
 effort to keep =$PATH= manipulation out of your =.zshrc=.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
     (use-package exec-path-from-shell
     :init
     (setq exec-path-from-shell-check-startup-files nil)
@@ -302,23 +302,23 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
 #+end_src
 
 ** org-recent-headings
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
      (use-package org-recent-headings
       :straight (org-recent-headings :type git :host github :repo "alphapapa/org-recent-headings")
       :hook ((org-mode) . org-recent-headings-mode )      )
 #+end_src
 
 ** smex
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package smex)
 #+end_src
 ** rainbow-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package rainbow-mode
     :hook ((org-mode emacs-lisp-mode) . rainbow-mode))
 #+end_src
 ** highlight-indent-guides
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
      (use-package highlight-indent-guides
       :straight (highlight-indent-guides :type git :host github :repo "DarthFennec/highlight-indent-guides")
       :hook ((python-mode emacs-lisp-mode) . highlight-indent-guides-mode)
@@ -328,7 +328,7 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
       )
 #+end_src
 ** restclient
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
         (use-package restclient
          :straight (restclient :type git :host github :repo "pashky/restclient.el")
          )
@@ -341,7 +341,7 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
                ))
 #+end_src
 ** zoom-window
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package zoom-window
    :straight (zoom-window :type git :host github :repo "emacsorphanage/zoom-window")
    :config
@@ -350,7 +350,7 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
 #+end_src
 
 ** jenkinsfile-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package groovy-mode)
 (use-package jenkinsfile-mode
  :straight (jenkinsfile-mode :type git :host github :repo "john2x/jenkinsfile-mode")
@@ -359,13 +359,13 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
 #+end_src
 
 ** insert-kaomoji
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package insert-kaomoji
   :bind ("C-x 8 k" . insert-kaomoji))
 #+end_src
 
 ** theme-changer
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   ;; (use-package heaven-and-hell
   ;;   :ensure t
   ;;   :init
@@ -380,7 +380,7 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
   ;;          ("<f6>" . heaven-and-hell-toggle-theme)))
 #+end_src
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
     ;; (defun pre-tidy-up-theme-sensitive-changes (current-theme)
     ;;   "Theme switching likes to have the previous themes cleared off."
     ;;   (disable-theme current-theme))
@@ -417,13 +417,13 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
 #+end_src
 
 ** bongo
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package bongo)
 #+end_src
 
 ** auto-dim-other-buffers
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package auto-dim-other-buffers
  :straight (auto-dim-other-buffers :type git :host github :repo "mina86/auto-dim-other-buffers.el")
  :config
@@ -432,12 +432,12 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
 
 ** COMMENT hyperbole
 #+CAPTION:
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package hyperbole)
 #+end_src
 
 ** treesitter
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package tree-sitter
   :straight (tree-sitter :type git
                          :host github
@@ -456,7 +456,7 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
 
 ** helpful
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package pretty-hydra
    :straight (pretty-hydra :type git :host github :repo "jerrypnz/major-mode-hydra.el" :files ("pretty-hydra.el"))
    :config
@@ -478,7 +478,7 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
 
 ** ibuffer
 #+CAPTION: Configure ibuffer
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
       (use-package ibuffer-projectile)
 
           (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -532,7 +532,7 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
 
 
 #+CAPTION: display human-readable sizes for buffers
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (defun ajv/human-readable-file-sizes-to-bytes (string)
   "Convert a human-readable file size into bytes."
   (interactive)
@@ -591,14 +591,14 @@ effort to keep =$PATH= manipulation out of your =.zshrc=.
               " " filename)))
 #+end_src
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package ibuffer-vc )
 #+end_src
 
 ** split window sensibly
 From [[https://stackoverflow.com/questions/23659909/reverse-evaluation-order-of-split-height-threshold-and-split-width-threshold-in][SO]], this is a way to prefer vertical splits over horizontal ones depending on
 window size.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (defun my-split-window-sensibly (&optional window)
   (let ((window (or window (selected-window))))
     (or (and (window-splittable-p window t)
@@ -626,13 +626,13 @@ window size.
 Auto-revert acts a lot more like modern editors (sublime, etc), which helps a great
 deal when editing files with potentially many editors at once.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (global-auto-revert-mode t)
 #+end_src
 
 ** display line numbers
 Line numbers are good.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
     (global-display-line-numbers-mode)
   ;;  (setq display-line-numbers 'relative)
     (setq-default display-line-numbers-width 4)
@@ -640,7 +640,7 @@ Line numbers are good.
 
 ** diff-hl
 diff-hl is a "git gutter": it hilights changed lines on the left hand side of a buffer.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package diff-hl
  :straight (diff-hl :type git
                :host github
@@ -649,7 +649,7 @@ diff-hl is a "git gutter": it hilights changed lines on the left hand side of a 
 #+end_src
 
 ** webpaste
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package webpaste
   :bind (("C-c C-p C-b" . webpaste-paste-buffer)
          ("C-c C-p C-r" . webpaste-paste-region))
@@ -662,7 +662,7 @@ diff-hl is a "git gutter": it hilights changed lines on the left hand side of a 
 
 ** hl-todo
 nominally hilight lines that have todo in them
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package hl-todo
    :straight (hl-todo :type git
                  :host github
@@ -679,12 +679,12 @@ nominally hilight lines that have todo in them
 
 ** Highlight row, column marker
 Hilight the row the mark is on.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
     (global-hl-line-mode)
     (set-face-background 'hl-line "gray22")
 #+end_src
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
     (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
     (add-hook 'org-mode-hook #'display-fill-column-indicator-mode)
     (set-face-foreground 'fill-column-indicator "gray22")
@@ -694,14 +694,14 @@ Hilight the row the mark is on.
 ** control font size with mouse
 This is a complete hack, because these don't affect all faces properly, but it's
 better than nothing.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (global-set-key (kbd "<C-mouse-4>") 'text-scale-increase)
   (global-set-key (kbd "<C-mouse-5>") 'text-scale-decrease)
 #+end_src
 
 ** pinboard
 Manage pinboard pins with [[https://github.com/davep/pinboard.el][pinboard.el]].
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
     (use-package pinboard
      :straight (pinboard :type git
                    :host github
@@ -727,7 +727,7 @@ Manage pinboard pins with [[https://github.com/davep/pinboard.el][pinboard.el]].
 
 ** powerline
 Add fancy modeline, because why not.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package powerline
    :straight (powerline :type git
                  :host github
@@ -738,7 +738,7 @@ Add fancy modeline, because why not.
 
 ** hippie-expand
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 
           (global-set-key (kbd "M-/") 'hippie-expand)
           (setq hippie-expand-try-functions-list
@@ -753,7 +753,7 @@ Add fancy modeline, because why not.
 #+end_src
 
 ** elpher
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package elpher
    :straight (elpher :type git
                  :repo "git://thelambdalab.xyz/elpher")
@@ -763,12 +763,12 @@ Add fancy modeline, because why not.
 
 ** winner
 [[https://www.emacswiki.org/emacs/WinnerMode][winner mode]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (winner-mode t)
 #+end_src
 
 ** pdf-tools
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
     (use-package pdf-tools
       :mode ("\\.pdf$" . pdf-view-mode)
       :config
@@ -776,7 +776,7 @@ Add fancy modeline, because why not.
       (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))
 #+end_src
 ** crux
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
    (use-package crux
     :straight (crux :type git
                   :host github
@@ -788,7 +788,7 @@ Add fancy modeline, because why not.
 #+end_src
 ** transient-dwim
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package transient-dwim
    :straight (transient-dwim :type git
                  :host github
@@ -797,7 +797,7 @@ Add fancy modeline, because why not.
    )
 #+end_src
 ** dired-sidebar
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
       (use-package dired-sidebar
        :straight (dired-sidebar :type git :host github :repo "jojojames/dired-sidebar")
       :commands (dired-sidebar-toggle-sidebar)
@@ -813,7 +813,7 @@ Add fancy modeline, because why not.
 #+end_src
 
 ** dired-hacks
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (defun grym-dired-filter-group-mode-off ()
     (interactive)
     (dired-filter-group-mode -1))
@@ -932,7 +932,7 @@ Add fancy modeline, because why not.
 | dired-collapse |
 
 ** diranged
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package diranged
  :straight (diranged :type git :host github :repo "tslight/diranged")
 :bind (:map dired-mode-map ("P" . diranged-mode))
@@ -941,7 +941,7 @@ Add fancy modeline, because why not.
 
 ** screenshot
 from [[https://old.reddit.com/r/emacs/comments/idz35e/emacs_27_can_take_svg_screenshots_of_itself/g2c2c6y/][alphapapa]]:
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (defun screenshot-svg ()
   "Save a screenshot of the current frame as an SVG image.
 Saves to a temp file and puts the filename in the kill ring."
@@ -955,7 +955,7 @@ Saves to a temp file and puts the filename in the kill ring."
 #+end_src
 
 ** vterm
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package vterm
        :straight (vterm :type git
                      :host github
@@ -966,7 +966,7 @@ Saves to a temp file and puts the filename in the kill ring."
 #+end_src
 
 ** burly
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package burly
  :straight (burly :type git :host github :repo "alphapapa/burly.el")
  :config
@@ -974,7 +974,7 @@ Saves to a temp file and puts the filename in the kill ring."
 #+end_src
 
 ** unfill
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package unfill
  :straight (unfill :type git :host github :repo "purcell/unfill")
  :config
@@ -987,7 +987,7 @@ Saves to a temp file and puts the filename in the kill ring."
 #+INCLUDE: "../nougat/packages/projectile/setup.org"
 
 Override default project directory path.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (setq projectile-project-search-path (list (expand-file-name "~/Projects/")
                                              (expand-file-name "~/lab-notebook")
                                              (expand-file-name (concat user-emacs-directory "emacs-nougat"))))
@@ -1022,7 +1022,7 @@ Override default project directory path.
 ** strikethrough-done
 Render org TODO states in the DONE category with struck-through text with a handy
 color scheme.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (setq org-fontify-done-headline t)
 (custom-set-faces
  '(org-done ((t (:foreground "DeepSkyBlue"
@@ -1036,7 +1036,7 @@ color scheme.
 ** org-refile
 from [[https://blog.aaronbieber.com/2017/03/19/organizing-notes-with-refile.html][here]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (setq org-agenda-files (list my/org-path-name))
 (setq org-refile-targets '((org-agenda-files :maxlevel . 5)))
 (setq org-refile-allow-creating-parent-nodes 'confirm)
@@ -1048,7 +1048,7 @@ useful to me for my note style right now (as of <2020-07-08 Wed> because i usual
 want to have a per-date work log tree, but move todos off where they belong under a
 project.)
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   ;; (setq org-id-link-to-org-use-id t)
 
   ;; (defun org-refile--insert-link ( &rest _ )
@@ -1066,7 +1066,7 @@ project.)
 
 ** org-fragtog
 [[https://github.com/io12/org-fragtog][from]] here:
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package org-fragtog
    :straight (org-fragtog :type git
                  :host github
@@ -1078,7 +1078,7 @@ project.)
 
 ** org-ref
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   ;; (use-package org-ref
   ;;  :straight (org-ref :type git
   ;;                :host github
@@ -1121,7 +1121,7 @@ for quickly applying export settings, annotating code blocks, and the like.
 ** lsp-mode
 LSP is the language server protocol
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package lsp-mode
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   :init (setq lsp-keymap-prefix "s-l")
@@ -1146,7 +1146,7 @@ LSP is the language server protocol
 
 #+end_src
 ** format-all-the-code
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package format-all
  :straight (format-all :type git :host github :repo "lassik/emacs-format-all-the-code")
  )
@@ -1158,14 +1158,14 @@ LSP is the language server protocol
 ** lisp
 #+INCLUDE: "../nougat/support/lisp/lispy-mode.org"
 *** aggressive-indent mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package aggressive-indent
     :hook ((emacs-lisp-mode) . aggressive-indent-mode)
     )
 #+end_src
 
 *** racket
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package racket-mode
    :config (setq tab-always-indent 'complete))
 #+end_src
@@ -1173,7 +1173,7 @@ LSP is the language server protocol
 
 ** yaml
 #+CAPTION:
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
    (use-package yaml-mode
     :straight (yaml-mode :type git :host github :repo "yoshiki/yaml-mode")
     :config
@@ -1188,7 +1188,7 @@ LSP is the language server protocol
 ** python
 *** black
 #+CAPTION: blacken lets you auto-blackify your python code
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   ;;https://github.com/pythonic-emacs/blacken
   (use-package blacken
     :straight (blacken :type git :host github :repo "pythonic-emacs/blacken")
@@ -1198,7 +1198,7 @@ LSP is the language server protocol
 #+end_src
 
 *** pyvenv
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package pyvenv
  :straight (pyvenv :type git
                :host github
@@ -1208,7 +1208,7 @@ LSP is the language server protocol
 
 *** poetry
 #+CAPTION: poetry https://github.com/galaunay/poetry.el
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package poetry
 :straight (poetry :type git
                   :host github
@@ -1220,13 +1220,13 @@ LSP is the language server protocol
 ** markdown
 #+INCLUDE: "../nougat/support/markdown/markdown-mode.org"
 *** markdown-toc
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package markdown-toc)
 #+end_src
 
 ** json
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package json-mode
     :straight (json-mode :type git
                          :host github
@@ -1240,7 +1240,7 @@ LSP is the language server protocol
 
 *** docker
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (use-package docker
  :straight (docker :type git
                :host github
@@ -1259,7 +1259,7 @@ LSP is the language server protocol
 #+INCLUDE: "../nougat/packages/hydra/extras/hydra-projectile.org"
 ** window-hydra
 From [[https://github.com/dsedivec/dot-emacs-d/blob/master/lisp/window-hydra.el][here]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package windmove)
   (use-package transpose-frame)
   (use-package ace-window

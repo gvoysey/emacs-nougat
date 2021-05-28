@@ -2,7 +2,7 @@
 Quickly jump to visible headers at various depths.
 ** goto-level
 Accepts a numeric level and offers an avy jump to all headings visible at that level.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (defun org-avy-goto-level (&optional num)
     (interactive (list
                   (read-number "Select heading level: " (org-current-level))))
@@ -14,7 +14,7 @@ Accepts a numeric level and offers an avy jump to all headings visible at that l
 
 ** same-level
 Offers an avy jump to all visible siblings of the heading containing the point.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (defun org-avy-same-level (&optional all)
     (interactive "P")
     (let ((org-level (org-current-level)))
@@ -38,7 +38,7 @@ Offers an avy jump to all visible siblings of the heading containing the point.
 ** parent-level
 Offers an avy jump to all visible headings at the level of the parent of the heading containing
 the point.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (defun org-avy-parent-level (&optional all)
     (interactive "P")
     (let ((org-level (org-current-level)))
@@ -65,7 +65,7 @@ the point.
 
 ** child-level
 Offers an avy jump to all visible children of the heading containing the point.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (defun org-avy-child-level (&optional all)
     (interactive "P")
     (if (save-excursion (org-goto-first-child))

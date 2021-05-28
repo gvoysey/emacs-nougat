@@ -2,7 +2,7 @@
 ** setup
 Getting org to play with straight.el is a little fussy.
 *** fix-org-git-version
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (defun fix-org-git-version ()
     "The Git version of org-mode.
     Inserted by installing org-mode or when a release is made."
@@ -17,7 +17,7 @@ Getting org to play with straight.el is a little fussy.
 #+end_src
 
 *** fix-org-release
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (defun fix-org-release ()
     "The release version of org-mode.
     Inserted by installing org-mode or when a release is made."
@@ -34,7 +34,7 @@ Getting org to play with straight.el is a little fussy.
 #+end_src
 
 *** install package
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
     (use-package org
       :mode ("\\.org\\'" . org-mode)
       :bind (:map org-mode-map
@@ -73,22 +73,22 @@ Getting org to play with straight.el is a little fussy.
 
 ** look
 *** indent by header level
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (add-hook 'org-mode-hook #'org-indent-mode)
 #+end_src
 *** superscripts
 require subscripts to need curlies: camel_case won't display weirdly this way
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (setq org-use-sub-superscripts "{}")
 #+end_src
 
 *** pretty heading bullets
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   ;; (use-package org-bullets
   ;;   :config
   ;;   (add-hook 'org-mode-hook 'org-bullets-mode))
 #+end_src
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
    (use-package org-superstar
     :straight (org-superstar :type git :host github :repo "integral-dw/org-superstar-mode")
     :after org
@@ -102,7 +102,7 @@ require subscripts to need curlies: camel_case won't display weirdly this way
 
 
 *** theme customizations
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (defvar org-beautify-font "Menlo")
 (when window-system
   (use-package org-beautify-theme)
@@ -177,7 +177,7 @@ require subscripts to need curlies: camel_case won't display weirdly this way
 
 ** feel
 *** auto-fill paragraphs
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (add-hook 'org-mode-hook 'turn-on-auto-fill)
 #+end_src
 
@@ -185,12 +185,12 @@ require subscripts to need curlies: camel_case won't display weirdly this way
 If you try to insert a heading in the middle of an entry, don't split it in half, but
 instead insert the new heading after the end of the current entry.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (setq org-insert-heading-respect-content nil)
 #+end_src
 
 *** ensure one-line between headers
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   ;; (defun org-mode--ensure-one-blank-line ()
   ;;   (save-excursion (goto-char (point-min))
   ;;                   (while (re-search-forward "#\\+[a-z_]+\\s-\\*" nil t)
@@ -210,6 +210,6 @@ instead insert the new heading after the end of the current entry.
 
 *** speed keys
 [[https://www.gnu.org/software/emacs/manual/html_node/org/Speed-keys.html][speed keys]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
 (setq org-use-speed-commands t)
 #+end_src
