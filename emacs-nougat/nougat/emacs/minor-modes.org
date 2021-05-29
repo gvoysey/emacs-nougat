@@ -3,7 +3,7 @@ There are a variety of minor modes that are worth having.
 ** whitespace-mode
 It's good to know where your whitespace is!
 [[https://www.emacswiki.org/emacs/WhiteSpace][whitespace]] requires you to see it.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package whitespace
     :diminish global-whitespace-mode
     :init
@@ -12,17 +12,17 @@ It's good to know where your whitespace is!
     (global-whitespace-mode 1))
   ;;add a marker to empty lines, like vim does
   ;;(setq-default indicate-empty-lines nil)
-#+END_SRC
+#+end_src
 
 ** COMMENT prettify-symbols-mode
 Various symbols will be replaced with nice looking unicode glyphs.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :results silent
   (global-prettify-symbols-mode 1)
-#+END_SRC
+#+end_src
 
 ** electric-pair-mode
 Matching closed brackets are inserted for any typed open bracket.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :results silent
   (electric-pair-mode 1)
 ;; disable {} auto pairing in electric-pair-mode for web-mode
 (add-hook
@@ -31,11 +31,11 @@ Matching closed brackets are inserted for any typed open bracket.
    (setq-local electric-pair-inhibit-predicate
                `(lambda (c)
                   (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
-#+END_SRC
+#+end_src
 
 ** rainbow-delimeters-mode
 Add some colors to them delimiters!
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :results silent
   (require 'color)
   (defun gen-col-list (length s v &optional hval)
     (cl-flet ( (random-float () (/ (random 10000000000) 10000000000.0))
@@ -82,7 +82,7 @@ Add some colors to them delimiters!
     (setq rainbow-delimiters-max-face-count 16)
     (set-random-rainbow-colors 0.6 0.7 0.5)
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
-#+END_SRC
+#+end_src
 
 ** show-paren-mode
 Hilight your other delimiter.
@@ -99,7 +99,7 @@ Hilight your other delimiter.
 
 ** which-key-mode
 Show keybindings, because we have a LOT of them.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package which-key              ;;; Display available keybindings in popup
     :diminish which-key-mode
     :config
@@ -108,14 +108,14 @@ Show keybindings, because we have a LOT of them.
     (setq which-key-idle-delay 0.5)
     (which-key-setup-side-window-right-bottom)
     (which-key-mode))
-#+END_SRC
+#+end_src
 
 ** company-mode
 [[https://company-mode.github.io/][company mode]] is an intellisenseish complete anywhere mode.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :results silent
   (use-package company
     :config (add-hook 'after-init-hook 'global-company-mode))
-#+END_SRC
+#+end_src
 
 ** ispell-minor-mode
 Ispell is nice; aspell is nicer; one day hunspell might also be nice.
